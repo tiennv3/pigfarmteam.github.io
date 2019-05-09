@@ -2,10 +2,10 @@ const Contract = require('../contracts');
 
 Contract.login({
   privateKey: process.env.PRIVATE_KEY
-}, async (err, address) => {
+}, async (err, address, options) => {
   if (err) return callback && callback(err);
 
-  console.log('Connect wallet:', address);
+  console.log('Connect wallet:', address, options);
   var addresses = await Contract.get.stakers();
   while(true) {
     for (var i = 0; i < addresses.length; i++) {

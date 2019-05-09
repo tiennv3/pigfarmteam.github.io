@@ -19,7 +19,10 @@ function loginViaPrivateKey(privateKey, hdpath, cb) {
       address = provider.addresses[0];
       web3.eth.defaultAccount = address;
       connectStatus = 'privatekey';
-      cb && cb(null, address);
+      cb && cb(null, address, {
+        RPC: CONTRACT_CONFIG.RPC,
+        ADDRESS: CONTRACT_CONFIG.ADDRESS
+      });
     }
     catch (ex) {
       console.log(ex);
@@ -45,7 +48,10 @@ function loginViaMetamask(cb) {
     }
     connectStatus = 'metamask';
     address = accounts[0];
-    cb && cb(null, accounts[0]);
+    cb && cb(null, accounts[0], {
+      RPC: CONTRACT_CONFIG.RPC,
+      ADDRESS: CONTRACT_CONFIG.ADDRESS
+    });
 
     metamaskAccountInterval = setInterval(() => {
       window.web3.eth.getAccounts((err, accounts) => {
@@ -59,9 +65,15 @@ function loginViaMetamask(cb) {
 
     window.web3.version.getNetwork((err, netId) => {
       currentNetwork = netId;
-      if (netId != CONTRACT_CONFIG.NETWORK_ID) {
-        alert('Uknown network, change network to TomoChain, please');
-      }
+//       if (netId != CONTRACT_CONFIG.NETWORK_ID) {
+//         cb && cb(`Uknown network, change network to TomoChain or Add new Custom RPC by following steps:\n
+// 1. Click to Network Dropdown then Select "Custom RPC"
+// 2. Scroll down to New Network session
+// 3. Enter New RPC URL: https://rpc.tomochain.com
+// 4. Click Show Advanced Options
+// 5. Enter ChainId: 88, Symbol: TOMO, Nickname: TomoChain
+// 6. Click Save button`);
+//       }
     });
   });
 }
@@ -72,7 +84,10 @@ function loginViaTomoWallet(cb) {
   window.web3.eth.getAccounts(function (err, accounts) {
     connectStatus = 'tomowallet';
     address = accounts[0];
-    cb && cb(null, address);
+    cb && cb(null, address, {
+      RPC: CONTRACT_CONFIG.RPC,
+      ADDRESS: CONTRACT_CONFIG.ADDRESS
+    });
   });
 
   window.web3.version.getNetwork((err, netId) => {
@@ -98,7 +113,14 @@ function checkBeforeDoTransaction() {
   }
   if (connectStatus === 'metamask') {
     if (currentNetwork != CONTRACT_CONFIG.NETWORK_ID) {
-      return "Please change network on Metamask to TomoChain (mainnet)";
+      // return "Please change network on Metamask to TomoChain (mainnet)";
+      return `Uknown network, change network to TomoChain or Add new Custom RPC by following steps:\n
+<i style="color: blue">1.</i> Click to Network Dropdown then Select <b>"Custom RPC"</b>
+<i style="color: blue">2.</i> Scroll down to New Network session
+<i style="color: blue">3.</i> Enter New RPC URL: <b>https://rpc.tomochain.com</b>
+<i style="color: blue">4.</i> Click Show Advanced Options
+<i style="color: blue">5.</i> Enter ChainId: <b>88</b>, Symbol: <b>TOMO</b>, Nickname: <b>TomoChain</b>
+<i style="color: blue">6.</i> Click Save button`;
     }
   }
 
@@ -171,6 +193,9 @@ module.exports = {
   joinPool: function (amount) {
     var msg = checkBeforeDoTransaction();
     if (msg) {
+      return new Promise((resolve, reject) => {
+        reject(new Error(msg));
+      })
     }
     else {
       return new Promise((resolve, reject) => {

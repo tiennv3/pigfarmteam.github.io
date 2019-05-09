@@ -19,6 +19,12 @@
             <div class="payout green">{{isWin(bet) ? `+ ${payout(bet)}` : ''}}</div>
           </div>
         </div>
+        <div v-if="store.balance < 50" class="home-buy-tomo">
+          Buy more Tomo for your game to be uninterrupted
+          <div>
+            <button class="btn primary">Buy Now</button>
+          </div>
+        </div>
       </div>
       <div class="home-gameinfo">
         <GameInfo />
@@ -309,6 +315,13 @@ export default {
     width: 500px;
     margin-top: 65px;
   }
+}
+
+.home-buy-tomo {
+  padding: 5px 15px;
+  color: #ffffff;
+  text-align: center;
+  background: #03A9F4;
 }
 
 .roll-btn {

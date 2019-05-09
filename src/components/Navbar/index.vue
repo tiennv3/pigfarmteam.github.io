@@ -11,9 +11,14 @@
         <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Pale'/>
       </div>
       <div v-if="address" class="account">
-        <div class="fs15 op7">Your balance</div>
+        <div class="fs15 op7" @click="showAccount">Your balance</div>
         <div class="fs25">
-          <animated-number :value="store.balance" :formatValue="formatBalance" :duration="500"/><span class="fs15">&nbsp;TOMO</span>
+          <button v-if="store.balance < 50" class="buy-btn">
+            <img width="100%" height="100%" src="./add.svg" />
+          </button>
+          <span @click="showAccount">
+            <animated-number :value="store.balance" :formatValue="formatBalance" :duration="500"/><span class="fs15">&nbsp;TOMO</span>
+          </span>
         </div>
         <div v-if="addBalanceValue > 0" class="navbar-addbalance animated slideInUp" style="color: #00d208; right: 80px;">+{{addBalanceValue}}</div>
         <div v-if="subBalanceValue < 0" class="navbar-addbalance animated slideOutUp" style="color: #f44336">{{subBalanceValue}}</div>
@@ -196,7 +201,7 @@ export default {
 .avatar {
   width: 40px;
   height: 40px;
-  background: #FFC107;
+  background: #2196F3;
   border-radius: 50px;
   border: 1px solid #ffffff;
   float: right;
@@ -235,5 +240,18 @@ export default {
   border: none;
   margin-left: 12px;
   background: rgba(0, 150, 136, 0.7);
+}
+
+.buy-btn {
+  outline: none;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 3px;
+  border-radius: 2px;
+  border: none;
+  margin-right: 8px;
+  background: #FFC107;
+  border: 1px solid #FF9800;
 }
 </style>
