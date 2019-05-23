@@ -26,6 +26,7 @@
         </tr>
       </tbody>
     </table>
+    <button class="btn secondary white mt10" @click="loadMore">Load More</button>
   </div>
 </template>
 
@@ -40,13 +41,20 @@ export default {
       bets: [],
       luckyNumbers: {},
       store: _store,
-      houseEdge: 1
+      houseEdge: 1,
+      limit: 13,
+      index: 0
     }
   },
   async created() {
     if (this.store.address) {
       var n = await Contract.get.totalNumberOfBets(this.store.address);
-      n && this.getOldBet(n-1);
+
+      if (n) {
+        this.index = n - 1;
+        this.getOldBet();
+      }
+
       this.subcribeNewBet();
       this.subcribeDrawBet();
     }
@@ -111,7 +119,7 @@ export default {
         var find = this.bets.find(e => e.index == bet.index);
         if (!find) {
           this.bets.unshift(bet);
-          this.bets = this.bets.slice(0, 13);
+          // this.bets = this.bets.slice(0, this.limit);
         }
       }, 'mybets');
     },
@@ -126,14 +134,19 @@ export default {
         }
       }, 'mybets');
     },
-    async getOldBet(index) {
-      if (index < 0 || this.bets.length >= 13) return;
+    loadMore() {
+      this.limit = this.bets.length + 10;
+      this.getOldBet();
+    },
+    async getOldBet() {
+      if (this.index < 0 || this.bets.length >= this.limit) return;
 
-      var bet = await Contract.get.betOf(this.store.address, index)
-      bet.index = index;
+      var bet = await Contract.get.betOf(this.store.address, this.index)
+      bet.index = this.index;
       if (bet && bet.player !== '0x0000000000000000000000000000000000000000') {
         this.bets.push(bet);
-        this.getOldBet(index - 1);
+        this.index -= 1;
+        this.getOldBet();
       }
     },
   }
