@@ -3,6 +3,7 @@
     <table width="100%">
       <thead>
         <tr class="fs12">
+          <th>#</th>
           <th>PREDICTION</th>
           <th>LUCKY NUM</th>
           <th>BETS</th>
@@ -10,7 +11,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(e, i) in bets" :key="getKey(e, i)">
+        <tr v-for="(e, i) in bets" :key="e.index">
+          <td style="color: rgba(255, 255, 255, 0.5)">{{numberOfBet - i}}</td>
           <td>
             {{e.isOver ? 'Over' : 'Under'}} {{e.number}}
           </td>
@@ -26,7 +28,7 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn secondary white mt10" @click="loadMore">Load More</button>
+    <button v-if="index > 0" class="btn secondary white mt10" @click="loadMore">Load More</button>
   </div>
 </template>
 
@@ -43,12 +45,14 @@ export default {
       store: _store,
       houseEdge: 1,
       limit: 13,
-      index: 0
+      index: 0,
+      numberOfBet: 0
     }
   },
   async created() {
     if (this.store.address) {
       var n = await Contract.get.totalNumberOfBets(this.store.address);
+      this.numberOfBet = n || 0;
 
       if (n) {
         this.index = n - 1;
@@ -78,9 +82,6 @@ export default {
         luckyNumber: parseInt(bet.luckyNumber),
         player: bet.player.toLowerCase()
       }
-    },
-    getKey(e, i){
-      return Math.random() + "-" + i;
     },
     isWin(bet) {
       if (bet.luckyNumber >= 0 && bet.isFinished) {
@@ -119,6 +120,7 @@ export default {
         var find = this.bets.find(e => e.index == bet.index);
         if (!find) {
           this.bets.unshift(bet);
+          this.numberOfBet++;
           // this.bets = this.bets.slice(0, this.limit);
         }
       }, 'mybets');
@@ -142,7 +144,6 @@ export default {
       if (this.index < 0 || this.bets.length >= this.limit) return;
 
       var bet = await Contract.get.betOf(this.store.address, this.index)
-      bet.index = this.index;
       if (bet && bet.player !== '0x0000000000000000000000000000000000000000') {
         this.bets.push(bet);
         this.index -= 1;
