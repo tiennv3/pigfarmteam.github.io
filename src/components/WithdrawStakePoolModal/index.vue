@@ -5,22 +5,25 @@
       <div class="modal-title">
         Withdraw from stake
       </div>
-      <div v-if="!msg">
+      <div v-if="msg">
+        <span :style="{color: !isError ? 'green' : 'red'}">{{msg}}</span>
+      </div>
+      <div v-else-if="!isLoading">
         <div class="gray">Your stake:</div>
         <div class="fs30 mt-15">{{stake}}<span class="fs15">&nbsp;TOMO</span></div>
-        <div v-if="isInPool && !isLoading" class="gray">Revenue:</div>
-        <div v-if="isInPool && !isLoading" class="fs40 mt-15 green">{{revenue}}<span class="fs25">&nbsp;TOMO</span></div>
+        <div v-if="isInPool" class="gray">Revenue:</div>
+        <div v-if="isInPool" class="fs40 mt-15 green">{{revenue}}<span class="fs25">&nbsp;TOMO</span></div>
         <div v-if="isRequestQuitPool" style="color: orange; margin-top: 10px">
           We will calculate pool and distribute profit or loss, therefroce you may receive more/less than total amount you are seeing.
           <button class="btn mt10 primary" @click="quitPool">Agree and Quit pool</button>
         </div>
-        <div v-else>
-          <button v-if="isInPool && !isLoading" class="btn primary mt10" @click="withdraw">Withdraw Your Revenue</button>
-          <button v-if="isInPool && !isLoading" class="btn mt10 secondary" @click="requestQuitPool">Quit Pool</button>
+        <div v-else-if="isInPool">
+          <button class="btn primary mt10" @click="withdraw">Withdraw Your Revenue</button>
+          <button class="btn mt10 secondary" @click="requestQuitPool">Quit Pool</button>
         </div>
-      </div>
-      <div v-else>
-        <span :style="{color: !isError ? 'green' : 'red'}">{{msg}}</span>
+        <div v-else>
+          <button class="btn mt10 primary" @click="quitPool">Withdraw Your Stake</button>
+        </div>
       </div>
     </div>
   </div>
