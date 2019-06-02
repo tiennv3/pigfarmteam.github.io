@@ -16,8 +16,8 @@
       </button>
     </div>
     <div class="bet-chance">
-      <div><span class="op5">Win Chance:</span>&nbsp;&nbsp;<span class="fs20">{{winChance}}%</span></div>
-      <div><span class="op5">Multiplier:</span>&nbsp;&nbsp;x<span class="fs20">{{multiplier}}</span></div>
+      <div style="width: calc(55%)"><span class="op5">Win Chance:</span>&nbsp;&nbsp;<span class="fs20">{{winChance}}%</span></div>
+      <div style="width: calc(45% - 4px)"><span class="op5">Multiplier:</span>&nbsp;&nbsp;x<span class="fs20">{{multiplier}}</span></div>
     </div>
     <div class="bet-amount">
       <label>Bet Amount</label>
@@ -255,7 +255,7 @@ export default {
 }
 
 .bet-amount {
-  width: calc(50% - 15px);
+  width: calc(55% - 15px);
   padding-left: 15px;
   text-align: left;
   position: relative;
@@ -305,7 +305,7 @@ export default {
   position: absolute;
   z-index: 4;
   background: #00a9e9;
-  left: 15px;
+  left: 14px;
   top: 1px;
   padding: 10px 7px;
   color: white;
@@ -319,7 +319,7 @@ export default {
 }
 
 .bet-payout {
-  width: calc(50% - 34px);
+  width: calc(45% - 34px);
   padding-right: 15px;
   text-align: left;
   position: relative;

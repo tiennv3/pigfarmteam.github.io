@@ -299,6 +299,8 @@ module.exports = {
         result.max = result.max > 500 ? 500 : result.max;
         result.min = result.min < result.max ? result.min : 0.1;
 
+        result.max = result.max > 10 ? Math.floor(result.max) : result.max;
+
         return result;
       })
   },
