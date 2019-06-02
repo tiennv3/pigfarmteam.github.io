@@ -21,8 +21,9 @@
     </div>
     <div class="bet-amount">
       <label>Bet Amount</label>
+      <button class="min-btn" @click="betMin">min</button>
       <input v-model="amount" type="number" @blur="scrollTop" @keypress="keyPress" @change="changeAmount">
-      <button @click="betMax">max</button>
+      <button class="max-btn" @click="betMax">max</button>
     </div>
     <div class="bet-payout">
       <label>Payout on WIN</label>
@@ -145,9 +146,14 @@ export default {
     betMax() {
       clearTimeout(this.timeoutGetRange);
       this.getRange(async () => {
-        var v = await Contract.get.balance(this.store.address)
-        v = utils.toTOMO(v);
+        var v = this.store.balance;
         this.amount = this.maxBet > v ? v : this.maxBet;
+      });
+    },
+    betMin() {
+      clearTimeout(this.timeoutGetRange);
+      this.getRange(async () => {
+        this.amount = this.minBet;
       });
     },
     refershAmount() {
@@ -276,9 +282,10 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   padding: 0px 15px;
   position: relative;
+  text-align: center;
 }
 
-.bet-amount button {
+.bet-amount .max-btn {
   position: absolute;
   z-index: 4;
   background: #00a9e9;
@@ -292,6 +299,23 @@ export default {
   font-family: 'Baloo', serif;
   border-radius: 0 10px 10px 0;
   cursor: pointer;
+  min-width: 41px;
+}
+.bet-amount .min-btn {
+  position: absolute;
+  z-index: 4;
+  background: #00a9e9;
+  left: 16px;
+  top: 1px;
+  padding: 10px 7px;
+  color: white;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: 'Baloo', serif;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  min-width: 41px;
 }
 
 .bet-payout {
