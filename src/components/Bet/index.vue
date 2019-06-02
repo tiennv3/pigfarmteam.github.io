@@ -305,7 +305,7 @@ export default {
   position: absolute;
   z-index: 4;
   background: #00a9e9;
-  left: 16px;
+  left: 15px;
   top: 1px;
   padding: 10px 7px;
   color: white;
