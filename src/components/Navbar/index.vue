@@ -1,12 +1,15 @@
 <template>
   <div class="navbar-bound">
     <div id="navbar" class="navbar">
-      <button class="leader-btn" @click="showHelp">
-        <img width="100%" height="100%" src="./help.svg" />
-      </button>
-      <button class="chat-btn" @click="() => store.isShowChatBox = true">
-        <img width="100%" height="100%" src="./chat.svg" />
-      </button>
+      <a class="leader-btn" @click="showHelp">
+        <img width="21px" height="21px" src="./help.svg" />
+      </a>
+      <a v-if="isTomoWallet" class="chat-btn" href="https://t.me/pigfarm">
+        <img width="21px" height="21px" src="./chat.svg" />
+      </a>
+      <a v-else class="chat-btn" target="__blank" href="https://t.me/pigfarm">
+        <img width="21px" height="21px" src="./chat.svg" />
+      </a>
       <div v-if="address" class="avatar" @click="showAccount">
         <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Pale'/>
       </div>
@@ -39,6 +42,7 @@ export default {
   data() {
     return {
       store: _store,
+      isTomoWallet: Contract.accountInfo().connectStatus == 'tomowallet',
       addBalanceValue: 0,
       subBalanceValue: 0
     }
@@ -213,27 +217,25 @@ export default {
   outline: none;
   cursor: pointer;
   margin-top: 5px;
-  width: 35px;
-  height: 35px;
   float: left;
   padding: 7px;
   border-radius: 7px;
   background-image: linear-gradient( 0deg, rgb(165,0,79) 0%, rgb(168,0,115) 100%);
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.35);
   border: none;
+  line-height: 0;
 }
 
 .chat-btn {
   outline: none;
   cursor: pointer;
   margin-top: 5px;
-  width: 35px;
-  height: 35px;
   float: left;
   padding: 7px;
   border-radius: 7px;
   border: none;
   margin-left: 12px;
   background: rgba(0, 150, 136, 0.7);
+  line-height: 0;
 }
 </style>
