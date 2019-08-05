@@ -1,7 +1,7 @@
 const Web3 = require('web3');
 const CONTRACT_CONFIG = require('./contractConfig');
 const utils = require('../utils');
-
+const BigNumber = require('bignumber.js')
 
 var listener = {};
 var LAST_BLOCK = null;
@@ -203,16 +203,16 @@ module.exports = {
   bet: function (index) {
     return LuckyContract
       .methods
-      .bets(index)
+      .bet(index)
       .call()
       .then(bet => ({
-        index: parseInt(bet.index),
+        index: index,
         amount: utils.toTOMO(bet.amount),
-        number: parseInt(bet.number),
-        isOver: bet.isOver,
+        number: bet.values ? parseInt(bet.values[1] || 0) : 0,
+        isOver: bet.values ? bet.values[0] == 1 ? true : false : false,
         round: parseInt(bet.round),
         isFinished: bet.isFinished,
-        luckyNumber: parseInt(bet.luckyNumber),
+        luckyNumber: parseInt(BigNumber(bet.luckyNumber).mod(100)),
         player: bet.player.toLowerCase()
       }))
   },
@@ -225,16 +225,16 @@ module.exports = {
         i = parseInt(i);
         return LuckyContract
           .methods
-          .bets(i)
+          .bet(i)
           .call()
           .then(bet => ({
-            index: parseInt(bet.index),
+            index: i,
             amount: utils.toTOMO(bet.amount),
-            number: parseInt(bet.number),
-            isOver: bet.isOver,
+            number: bet.values ? parseInt(bet.values[1] || 0) : 0,
+            isOver: bet.values ? bet.values[0] == 1 ? true : false : false,
             round: parseInt(bet.round),
             isFinished: bet.isFinished,
-            luckyNumber: parseInt(bet.luckyNumber),
+            luckyNumber: parseInt(BigNumber(bet.luckyNumber).mod(100)),
             player: bet.player.toLowerCase()
           }));
       })
@@ -247,16 +247,16 @@ module.exports = {
       .then(index => {
         return LuckyContract
           .methods
-          .bets(index)
+          .bet(index)
           .call()
           .then(bet => ({
-            index: parseInt(bet.index),
+            index: parseInt(index),
             amount: utils.toTOMO(bet.amount),
-            number: parseInt(bet.number),
-            isOver: bet.isOver,
+            number: bet.values ? parseInt(bet.values[1] || 0) : 0,
+            isOver: bet.values ? bet.values[0] == 1 ? true : false : false,
             round: parseInt(bet.round),
             isFinished: bet.isFinished,
-            luckyNumber: parseInt(bet.luckyNumber),
+            luckyNumber: parseInt(BigNumber(bet.luckyNumber).mod(100)),
             player: bet.player.toLowerCase()
           }));
       })
@@ -289,7 +289,8 @@ module.exports = {
   betRange: function(number, isOver) {
     return LuckyContract
       .methods
-      .betRange(number, isOver, 0)
+      .betRange(CONTRACT_CONFIG.GAME,
+        [isOver ? 1 : 0, number, 0, 0, 0], 0)
       .call()
       .then(v => {
         var result = {

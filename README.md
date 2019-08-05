@@ -6,6 +6,15 @@ MaxBet aims to become a new standard dice game run on the scalable TomoChain blo
 
 Read our paper: https://maxbet.pigfarm.io/static/paper.pdf
 
+## Deploy Contract
+Deploy ReferralContract
+
+Deploy RollContract
+
+Deploy MaxBetContract
+
+AddGame into ReferralContract
+
 ## For Dev
 
 ``` bash

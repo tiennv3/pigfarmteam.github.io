@@ -157,15 +157,14 @@ export default {
       return icons[Math.round(Math.random() * 1000) % icons.length];
     },
     subcribeNewBet() {
-      Contract.get.onListenEvent('NewBet', value => {
-        value.isFinished = false;
-        value.luckyNumber = 0;
-        var bet = this.parseBet(value);
+      Contract.get.onListenEvent('NewBet', async value => {
+        var bet = await Contract.get.bet(value.index);
+        this.processUpdateBet(bet);
       }, 'HOME_NEW_BET');
     },
     subcribeDrawBet() {
-      Contract.get.onListenEvent('DrawBet', value => {
-        var bet = this.parseBet(value);
+      Contract.get.onListenEvent('DrawBet', async value => {
+        var bet = await Contract.get.bet(value.index);
         this.processUpdateBet(bet);
       }, 'HOME_DRAW_BET');
     },
@@ -217,9 +216,8 @@ export default {
           var bet = await Contract.get.bet(betIndex);
           this.store.isRolling = bet.isFinished ? false : this.store.isRolling;
         }, 30000);
-        debugger;
 
-        var hash = await Contract.placeBet(this.bet.amount, this.bet.number, this.bet.isOver);
+        var hash = await Contract.placeBet(this.bet.amount, this.bet.number, this.bet.isOver, '0xad124feb060a7afd77a05215485ef7f28ce2b1ea');
         this.$refs.nav && this.$refs.nav.addBalance(-this.bet.amount, false, true);
         var tx = await Contract.get.checkTx(hash);
         this.$refs.bet && this.$refs.bet.refershAmount();

@@ -111,10 +111,8 @@ export default {
       return result > 0 ? result : '-';
     },
     subcribeNewBet() {
-      Contract.get.onListenEvent('NewBet', value => {
-        value.isFinished = false;
-        value.luckyNumber = 0;
-        var bet = this.parseBet(value);
+      Contract.get.onListenEvent('NewBet', async value => {
+        var bet = await Contract.get.bet(value.index);
         var find = this.bets.find(e => e.index == bet.index);
         if (!find) {
           this.bets.unshift(bet);
@@ -123,12 +121,13 @@ export default {
       }, 'playerTable');
     },
     subcribeDrawBet() {
-      Contract.get.onListenEvent('DrawBet', value => {
-        value.player = value.player.toLowerCase();
-        var bet = this.bets.find(e => e.player == value.player);
-        if (bet) {
-          bet.isFinished = true;
-          bet.luckyNumber = parseInt(value.luckyNumber);
+      Contract.get.onListenEvent('DrawBet', async value => {
+        var bet = await Contract.get.bet(value.index);
+        bet.player = bet.player.toLowerCase();
+        var fbet = this.bets.find(e => e.player == bet.player);
+        if (fbet) {
+          fbet.isFinished = true;
+          fbet.luckyNumber = parseInt(bet.luckyNumber);
         }
       }, 'playerTable');
     },
