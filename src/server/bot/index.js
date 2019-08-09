@@ -21,17 +21,21 @@ async function getBetForSettle() {
   return null;
 }
 
+function betToString(bet) {
+  return `${bet.index}: ${bet.player} | ${bet.round} | ${bet.number >= 10 ? bet.number : '0' + bet.number} | ${bet.isOver ? 'Over ' : 'Under'} | ${bet.amount}`;
+}
 
 async function nextTick(cb) {
   try {
-    if (stop) return;
+    if (stop) return nextTick(callback);
 
     var bet = await getBetForSettle();
     if (bet && !checkRound[bet.round]) {
       var settle = await CommitReveal.getSecretForBet(bet);
       if (settle.round == 0) {
-        return;
+        return nextTick(callback);
       }
+      console.log(betToString(bet));
       var commitment = await CommitReveal.generateCommitment();
       var hash = await Contract.nextTick(settle.round, settle.secret, commitment, MAX_FINISH_BET);
       console.log(`NextTick: ${hash}`)
@@ -41,9 +45,10 @@ async function nextTick(cb) {
       if (process.env.WAIT_CONFIRM == 'true') {
         await Contract.get.checkTx(hash);
       }
+      nextTick(callback)
     }
     else {
-      return;
+      return nextTick(callback);
     }
   }
   catch (ex) {
@@ -64,9 +69,9 @@ module.exports = {
       console.log('Connect wallet:', address);
       try {
         await gameInit();
-        this.nextTickTimer = setInterval(() => {
-          nextTick(callback);
-        }, 100);
+        nextTick(callback);
+        // this.nextTickTimer = setInterval(() => {
+        // }, 1000);
       }
       catch (ex) {
         return callback && callback(ex);

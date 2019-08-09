@@ -2,9 +2,7 @@ const Contract = require('../../contracts');
 const web3 = require('web3');
 const db = require('../db');
 const CryptoJS = require("crypto-js");
-function betToString(bet) {
-  return `${bet.index}: ${bet.player} | ${bet.round} | ${bet.number >= 10 ? bet.number : '0' + bet.number} | ${bet.isOver ? 'Over ' : 'Under'} | ${bet.amount}`;
-}
+
 async function generateCommitment() {
   var secret = web3.utils.randomHex(32);
   var commitment = web3.utils.soliditySha3({type: 'uint', value: secret});
@@ -23,7 +21,6 @@ async function getSecret(commitment) {
 async function getSecretForBet(bet) {
   try {
     if (bet) {
-      console.log('> ', betToString(bet));
       var randIndex = await Contract.get.roundToRandIndex(bet.round);
       var rand = await Contract.get.rand(randIndex);
       var secret = rand.secret == '0' ? await getSecret(rand.commitment) : 0;
