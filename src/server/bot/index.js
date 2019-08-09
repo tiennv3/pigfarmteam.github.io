@@ -6,7 +6,6 @@ const MAX_FINISH_BET = 100;
 
 var nextTickTimer;
 var stop = false;
-var lastBlockNumber = 0;
 var checkRound = {}
 
 async function getBetForSettle() {
@@ -27,13 +26,13 @@ function betToString(bet) {
 
 async function nextTick(cb) {
   try {
-    if (stop) return nextTick(callback);
+    if (stop) return setTimeout(() => nextTick(callback), 100);
 
     var bet = await getBetForSettle();
     if (bet && !checkRound[bet.round]) {
       var settle = await CommitReveal.getSecretForBet(bet);
       if (settle.round == 0) {
-        return nextTick(callback);
+        return setTimeout(() => nextTick(callback), 100);
       }
       console.log(betToString(bet));
       var commitment = await CommitReveal.generateCommitment();
@@ -48,7 +47,7 @@ async function nextTick(cb) {
       nextTick(callback)
     }
     else {
-      return nextTick(callback);
+      return setTimeout(() => nextTick(callback), 100);
     }
   }
   catch (ex) {
