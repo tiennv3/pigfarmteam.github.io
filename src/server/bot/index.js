@@ -26,13 +26,13 @@ function betToString(bet) {
 
 async function nextTick(cb) {
   try {
-    if (stop) return setTimeout(() => nextTick(callback), 100);
+    if (stop) return setTimeout(() => nextTick(cb), 100);
 
     var bet = await getBetForSettle();
     if (bet && !checkRound[bet.round]) {
       var settle = await CommitReveal.getSecretForBet(bet);
       if (settle.round == 0) {
-        return setTimeout(() => nextTick(callback), 100);
+        return setTimeout(() => nextTick(cb), 100);
       }
       console.log(betToString(bet));
       var commitment = await CommitReveal.generateCommitment();
@@ -44,10 +44,10 @@ async function nextTick(cb) {
       if (process.env.WAIT_CONFIRM == 'true') {
         await Contract.get.checkTx(hash);
       }
-      nextTick(callback)
+      nextTick(cb)
     }
     else {
-      return setTimeout(() => nextTick(callback), 100);
+      return setTimeout(() => nextTick(cb), 100);
     }
   }
   catch (ex) {
