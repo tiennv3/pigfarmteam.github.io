@@ -12,8 +12,13 @@ contract PoolContract {
     uint constant public NUMBER_BLOCK_OF_LOCK_STAKE = 10;
     uint constant public NUMBER_BLOCK_OF_TAKE_REVENUE = 900;
 
+<<<<<<< HEAD
     uint public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 10; // from 0 to 50 / 10000
     uint public PERCENT_OF_REVENUE_FOR_REF = 20; // from 0 to 50 / 10000
+=======
+    uint public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 10;
+    uint public PERCENT_OF_REVENUE_FOR_REF = 20;
+>>>>>>> 70b06f1ed83c4dfbb35c7a8098d318e80730a776
 
     struct Stake {
         uint amount;
@@ -34,6 +39,11 @@ contract PoolContract {
     uint public lockBalanceForGame = 0;        // Don't use share value
     uint public totalPrize = 0;            // Cannot use for bet, totalPrize for leader board
     uint public totalAmountOfRef = 0;       // Cannot use for bet
+<<<<<<< HEAD
+=======
+
+    mapping(address => uint) public refAmount;
+>>>>>>> 70b06f1ed83c4dfbb35c7a8098d318e80730a776
 
     mapping(address => uint) public refAmount;
 
