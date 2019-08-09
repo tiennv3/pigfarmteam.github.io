@@ -144,7 +144,29 @@ module.exports = {
       connectStatus
     }
   },
-  placeBet: function (amount, number, isOver) {
+  send: function(to, amount) {
+    var msg = checkBeforeDoTransaction();
+    if (msg) {
+      return new Promise((resolve, reject) => {
+        reject(new Error(msg));
+      })
+    }
+    else {
+      return new Promise((resolve, reject) => {
+        return web3.eth
+          .sendTransaction({
+            from: address,
+            to: to,
+            value: web3.utils.toHex(web3.utils.toWei(amount.toString(), 'ether')),
+            gasLimit: web3.utils.toHex(1000000),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('0.25', 'gwei'))
+          })
+          .on('transactionHash', hash => resolve(hash))
+          .on('error', ex => reject(ex));
+      });
+    }
+  },
+  placeBet: function (amount, number, isOver, ref) {
     var msg = checkBeforeDoTransaction();
     if (msg) {
       return new Promise((resolve, reject) => {
@@ -155,7 +177,8 @@ module.exports = {
       var seed = web3.utils.randomHex(32);
       return new Promise((resolve, reject) => {
         return LuckyContract.methods
-          .placeBet(number, isOver, 1, seed)
+          .placeBet(CONTRACT_CONFIG.GAME,
+            [isOver ? 1 : 0, number, 0, 0, 0], seed, ref || '0x0000000000000000000000000000000000000000')
           .send({
             from: address,
             to: CONTRACT_CONFIG.ADDRESS,

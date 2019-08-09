@@ -18,7 +18,11 @@ module.exports = {
   NETWORK_ID: process.env.NODE_ENV === 'production' ? '88' : '89',
   ADDRESS: process.env.NODE_ENV === 'production' ?
     '0x305f55a3d55e01eed0b2b33fa1fd035ac5d086f7' :
-    '0x2f1c28f3eb9c7626225ff12b269d1f4bec83e27f'
+    '0xe9fad9249a755f893298b5a6febd48d18fc20615',
+
+  GAME: process.env.NODE_ENV === 'production' ?
+    '0x305f55a3d55e01eed0b2b33fa1fd035ac5d086f7' :
+    '0x213d986d48b1d0177cb6aad0b68d6d2216eea242'
 }
 
 // module.exports = {

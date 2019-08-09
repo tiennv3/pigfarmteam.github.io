@@ -1,44 +1,30 @@
 module.exports = [
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "",
+				"name": "add",
 				"type": "address"
 			}
 		],
-		"name": "amountOf",
-		"outputs": [
-			{
-				"name": "totalBet",
-				"type": "uint256"
-			},
-			{
-				"name": "totalPayout",
-				"type": "uint256"
-			}
-		],
+		"name": "addCroupier",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "player",
+				"name": "add",
 				"type": "address"
 			}
 		],
-		"name": "totalNumberOfBets",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"name": "addGame",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -56,265 +42,14 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "MINIMUM_BET_AMOUNT",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "stakes",
-		"outputs": [
-			{
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"name": "isInPool",
-				"type": "bool"
-			},
-			{
-				"name": "totalStake",
-				"type": "uint256"
-			},
-			{
-				"name": "profit",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "n",
-				"type": "uint256"
+				"name": "_commitment",
+				"type": "bytes32"
 			}
 		],
-		"name": "settleBet",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "PRIZE_PER_BET_LEVEL",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "subAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "balanceForGame",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "bets",
-		"outputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			},
-			{
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"name": "player",
-				"type": "address"
-			},
-			{
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"name": "luckyNumber",
-				"type": "uint256"
-			},
-			{
-				"name": "gameType",
-				"type": "uint256"
-			},
-			{
-				"name": "seed",
-				"type": "uint256"
-			},
-			{
-				"name": "isFinished",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "confirm",
-				"type": "uint256"
-			},
-			{
-				"name": "isStopNow",
-				"type": "bool"
-			}
-		],
-		"name": "prepareStopGame",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "numberOfLeaderBoardRounds",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "MIN_STAKE_AMOUNT",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "betRange",
-		"outputs": [
-			{
-				"name": "min",
-				"type": "uint256"
-			},
-			{
-				"name": "max",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "prizeForLeaderBoard",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "i",
-				"type": "uint256"
-			},
-			{
-				"name": "j",
-				"type": "uint256"
-			}
-		],
-		"name": "removeDuplicateStaker",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			}
-		],
-		"name": "refundBet",
+		"name": "commit",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -323,44 +58,7 @@ module.exports = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "withdrawAllBalanceAfterRefundForAllStaker",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "roundToRandIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			},
-			{
-				"name": "isCroupier",
-				"type": "bool"
-			}
-		],
-		"name": "setCroupier",
+		"name": "confirmChangeOperator",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -369,159 +67,10 @@ module.exports = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "quitPool",
+		"name": "finishLeaderBoard",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "leaderBoards",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "i",
-				"type": "uint256"
-			}
-		],
-		"name": "removeStaker",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "takeProfitAtBlock",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getStakers",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "betAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "calculatePrizeForBet",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "leaderBoardWinners",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "randIndexForNextRound",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "confirm",
-				"type": "uint256"
-			}
-		],
-		"name": "forceStopGame",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "MAX_STAKER_IN_POOL",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -539,124 +88,17 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "operator",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "PERCENT_OF_REVENUE_FOR_LEADER_BOARD",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "",
-				"type": "address"
-			},
-			{
-				"name": "",
+				"name": "confirm",
 				"type": "uint256"
 			}
 		],
-		"name": "betsOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "takeProfit",
+		"name": "forceStopGame",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "stopped",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "NUMBER_BLOCK_OF_LOCK_STAKE",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalPrize",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "croupiers",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -666,139 +108,6 @@ module.exports = [
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "NUMBER_BLOCK_OF_LEADER_BOARD",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "leaderBoardRounds",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "HOUSE_EDGE",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "balanceOfBet",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getLastRand",
-		"outputs": [
-			{
-				"name": "commitment",
-				"type": "bytes32"
-			},
-			{
-				"name": "secret",
-				"type": "uint256"
-			},
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"name": "_secret",
-				"type": "uint256"
-			}
-		],
-		"name": "reveal",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "withdrawProfit",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			},
-			{
-				"name": "isFromTail",
-				"type": "bool"
-			}
-		],
-		"name": "getRoundLeaderBoard",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -813,62 +122,6 @@ module.exports = [
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "WITHDRAW_FEE",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "lockBalanceForGame",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			}
-		],
-		"name": "rejoinPool",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "MAX_LEADER_BOARD",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -898,161 +151,217 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "operatorWithdraw",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "game",
+				"type": "address"
+			},
+			{
+				"name": "values",
+				"type": "uint256[5]"
+			},
+			{
+				"name": "seed",
+				"type": "uint256"
+			},
+			{
+				"name": "ref",
+				"type": "address"
+			}
+		],
+		"name": "placeBet",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "confirm",
+				"type": "uint256"
+			},
+			{
+				"name": "isStopNow",
+				"type": "bool"
+			}
+		],
+		"name": "prepareStopGame",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "prizeForLeaderBoard",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "quitPool",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
 				"name": "add",
 				"type": "address"
 			}
 		],
-		"name": "getLastBetIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"name": "refundBet",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "numberOfBetWaittingDraw",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "balanceOfOperator",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "stakersInPool",
-		"outputs": [
-			{
-				"name": "",
+				"name": "add",
 				"type": "address"
 			}
 		],
+		"name": "rejoinPool",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "NUMBER_BLOCK_OF_TAKE_REVENUE",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getCurrentLeaderBoard",
-		"outputs": [
-			{
-				"name": "currentRound",
-				"type": "uint256"
-			},
-			{
-				"name": "players",
-				"type": "address[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "indexOfDrawnBet",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "rands",
-		"outputs": [
-			{
-				"name": "commitment",
-				"type": "bytes32"
-			},
-			{
-				"name": "secret",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
+				"name": "add",
 				"type": "address"
 			}
 		],
-		"name": "totalBetOfPlayers",
-		"outputs": [
+		"name": "removeCroupier",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
+				"name": "i",
+				"type": "uint256"
+			},
+			{
+				"name": "j",
 				"type": "uint256"
 			}
 		],
+		"name": "removeDuplicateStaker",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "removeGame",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "i",
+				"type": "uint256"
+			}
+		],
+		"name": "removeStaker",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "round",
+				"type": "uint256"
+			},
+			{
+				"name": "_secret",
+				"type": "uint256"
+			}
+		],
+		"name": "reveal",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "v",
+				"type": "uint256"
+			}
+		],
+		"name": "setPercentForPrize",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "v",
+				"type": "uint256"
+			}
+		],
+		"name": "setPercentOfRef",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1073,184 +382,50 @@ module.exports = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"name": "gameType",
-				"type": "uint256"
-			},
-			{
-				"name": "seed",
+				"name": "n",
 				"type": "uint256"
 			}
 		],
-		"name": "placeBet",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "PERCENT_OF_REVENUE_FOR_OPERATOR",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "confirmChangeOperator",
+		"name": "settleBet",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalBetOfGame",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [],
-		"name": "finishLeaderBoard",
+		"name": "takeProfit",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "totalWinAmountOfGame",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			},
-			{
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "operatorWithdraw",
+		"inputs": [],
+		"name": "withdrawAllBalanceAfterRefundForAllStaker",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			}
-		],
-		"name": "getMinAmountForJoin",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
-		"inputs": [
-			{
-				"name": "_commitment",
-				"type": "bytes32"
-			}
-		],
-		"name": "commit",
+		"inputs": [],
+		"name": "withdrawProfit",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [],
-		"name": "balanceOfStakerOut",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"name": "withdrawRef",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getStakersInPool",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "stakers",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1261,6 +436,14 @@ module.exports = [
 			},
 			{
 				"name": "_croupier",
+				"type": "address"
+			},
+			{
+				"name": "_referral",
+				"type": "address"
+			},
+			{
+				"name": "_game",
 				"type": "address"
 			}
 		],
@@ -1322,37 +505,7 @@ module.exports = [
 		"inputs": [
 			{
 				"indexed": false,
-				"name": "player",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "gameType",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
 				"name": "index",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"indexed": false,
-				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -1364,47 +517,7 @@ module.exports = [
 		"inputs": [
 			{
 				"indexed": false,
-				"name": "player",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "seedNumber",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
 				"name": "index",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"indexed": false,
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "isFinished",
-				"type": "bool"
-			},
-			{
-				"indexed": false,
-				"name": "luckyNumber",
 				"type": "uint256"
 			}
 		],
@@ -1486,5 +599,1005 @@ module.exports = [
 		],
 		"name": "Distribute",
 		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "amountOf",
+		"outputs": [
+			{
+				"name": "totalBet",
+				"type": "uint256"
+			},
+			{
+				"name": "totalPayout",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "subAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "balanceForGame",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balanceOfBet",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balanceOfOperator",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balanceOfStakerOut",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "i",
+				"type": "uint256"
+			}
+		],
+		"name": "bet",
+		"outputs": [
+			{
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"name": "player",
+				"type": "address"
+			},
+			{
+				"name": "round",
+				"type": "uint256"
+			},
+			{
+				"name": "luckyNumber",
+				"type": "uint256"
+			},
+			{
+				"name": "seed",
+				"type": "uint256"
+			},
+			{
+				"name": "isFinished",
+				"type": "bool"
+			},
+			{
+				"name": "values",
+				"type": "uint256[5]"
+			},
+			{
+				"name": "game",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "game",
+				"type": "address"
+			},
+			{
+				"name": "values",
+				"type": "uint256[5]"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "betRange",
+		"outputs": [
+			{
+				"name": "min",
+				"type": "uint256"
+			},
+			{
+				"name": "max",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "bets",
+		"outputs": [
+			{
+				"name": "index",
+				"type": "uint256"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"name": "player",
+				"type": "address"
+			},
+			{
+				"name": "round",
+				"type": "uint256"
+			},
+			{
+				"name": "luckyNumber",
+				"type": "uint256"
+			},
+			{
+				"name": "seed",
+				"type": "uint256"
+			},
+			{
+				"name": "isFinished",
+				"type": "bool"
+			},
+			{
+				"name": "game",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "betsOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "betAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "calculatePrizeForBet",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "croupiers",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getCurrentLeaderBoard",
+		"outputs": [
+			{
+				"name": "currentRound",
+				"type": "uint256"
+			},
+			{
+				"name": "players",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "getLastBetIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getLastRand",
+		"outputs": [
+			{
+				"name": "commitment",
+				"type": "bytes32"
+			},
+			{
+				"name": "secret",
+				"type": "uint256"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "getMinAmountForJoin",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "index",
+				"type": "uint256"
+			},
+			{
+				"name": "isFromTail",
+				"type": "bool"
+			}
+		],
+		"name": "getRoundLeaderBoard",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getStakers",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getStakersInPool",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "HOUSE_EDGE",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "indexOfDrawnBet",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "leaderBoardRounds",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "leaderBoards",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "leaderBoardWinners",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "lockBalanceForGame",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "MAX_LEADER_BOARD",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "MAX_STAKER_IN_POOL",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "MIN_STAKE_AMOUNT",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "MINIMUM_BET_AMOUNT",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "NUMBER_BLOCK_OF_LEADER_BOARD",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "NUMBER_BLOCK_OF_LOCK_STAKE",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "NUMBER_BLOCK_OF_TAKE_REVENUE",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "numberOfBetWaittingDraw",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "numberOfLeaderBoardRounds",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "operator",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "PERCENT_OF_REVENUE_FOR_LEADER_BOARD",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "PERCENT_OF_REVENUE_FOR_OPERATOR",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "PERCENT_OF_REVENUE_FOR_REF",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "PRIZE_PER_BET_LEVEL",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "randIndexForNextRound",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "rands",
+		"outputs": [
+			{
+				"name": "commitment",
+				"type": "bytes32"
+			},
+			{
+				"name": "secret",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "refAmount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "referral",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "roundToRandIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "stakers",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "stakersInPool",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "stakes",
+		"outputs": [
+			{
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"name": "isInPool",
+				"type": "bool"
+			},
+			{
+				"name": "totalStake",
+				"type": "uint256"
+			},
+			{
+				"name": "profit",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "stopped",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "takeProfitAtBlock",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalAmountOfRef",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalBetOfGame",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "totalBetOfPlayers",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "player",
+				"type": "address"
+			}
+		],
+		"name": "totalNumberOfBets",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalPrize",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalWinAmountOfGame",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "WITHDRAW_FEE",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]

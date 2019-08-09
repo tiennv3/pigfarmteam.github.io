@@ -6,12 +6,14 @@ contract PoolContract {
     using SafeMath for uint;
 
     uint constant public PERCENT_OF_REVENUE_FOR_OPERATOR = 10;
-    uint constant public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 10;
     uint constant public WITHDRAW_FEE = 10 ether;
     uint constant public MAX_STAKER_IN_POOL = 20;
     uint constant public MIN_STAKE_AMOUNT = 500 ether;
     uint constant public NUMBER_BLOCK_OF_LOCK_STAKE = 10;
     uint constant public NUMBER_BLOCK_OF_TAKE_REVENUE = 900;
+
+    uint public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 10; // from 0 to 50 / 10000
+    uint public PERCENT_OF_REVENUE_FOR_REF = 20; // from 0 to 50 / 10000
 
     struct Stake {
         uint amount;
@@ -31,7 +33,9 @@ contract PoolContract {
     uint public balanceOfBet = 0;          // Total balance of are not finished
     uint public lockBalanceForGame = 0;        // Don't use share value
     uint public totalPrize = 0;            // Cannot use for bet, totalPrize for leader board
+    uint public totalAmountOfRef = 0;       // Cannot use for bet
 
+    mapping(address => uint) public refAmount;
 
     // This store all of stakers and their current amount in the contract
     // contain both in/out of pool
@@ -94,7 +98,7 @@ contract PoolContract {
             .sub(subAmount)
             .sub(balanceOfOperator + balanceOfStakerOut)
             .sub(balanceOfBet)
-            .sub(totalPrize + profit);
+            .sub(totalPrize + totalAmountOfRef + profit);
         return pool > bal ? bal : pool;
     }
 
@@ -272,7 +276,7 @@ contract PoolContract {
             .sub(subAmount)
             .sub(balanceOfOperator + balanceOfStakerOut)
             .sub(balanceOfBet)
-            .sub(totalPrize + profit);
+            .sub(totalPrize + totalAmountOfRef + profit);
 
         if (currentPool > pool) {
             distributeProfit(pool, currentPool - pool);
@@ -285,6 +289,14 @@ contract PoolContract {
     function shareProfitForPrize(uint amount) internal {
         uint prize = amount.mul(PERCENT_OF_REVENUE_FOR_LEADER_BOARD).div(10000);
         totalPrize = totalPrize.add(prize);
+    }
+
+    function shareProfitForRef(uint amount, address ref) internal {
+        if (ref != address(0x0)) {
+            uint value = amount.mul(PERCENT_OF_REVENUE_FOR_REF).div(10000);
+            totalAmountOfRef = totalAmountOfRef.add(value);
+            refAmount[ref] = refAmount[ref].add(value);
+        }
     }
 
     function sendPrizeToWinner(address payable winner, uint amount) internal {
@@ -364,8 +376,15 @@ contract PoolContract {
         require(stake.profit > 0, "Don't have profit");
         uint transferAmount = stake.profit.mul(100 - PERCENT_OF_REVENUE_FOR_OPERATOR).div(100);
         balanceOfOperator = balanceOfOperator.add(stake.profit).sub(transferAmount);
-        msg.sender.transfer(transferAmount);
         stake.profit = 0;
+        msg.sender.transfer(transferAmount);
+    }
+
+    function withdrawRef() external {
+        uint value = refAmount[msg.sender];
+        require(value > 0);
+        refAmount[msg.sender] = 0;
+        msg.sender.transfer(value);
     }
 
     /**
@@ -416,10 +435,20 @@ contract PoolContract {
         stakers.pop();
     }
 
+    function setPercentForPrize(uint v) external onlyOperator {
+        require(v >= 0 && v <= 50);
+        PERCENT_OF_REVENUE_FOR_LEADER_BOARD = v;
+    }
+
+    function setPercentOfRef(uint v) external onlyOperator {
+        require(v >= 0 && v <= 50);
+        PERCENT_OF_REVENUE_FOR_REF = v;
+    }
+
     /** FOR EMERGENCY */
 
     function prepareStopGame(uint confirm, bool isStopNow) external onlyOperator {
-        require(confirm == 0x14122018, "Enter confirm code");
+        require(confirm == 0x1, "Enter confirm code");
         takeProfitInternal(true, 0);
         for (uint i = 0; i < MAX_STAKER_IN_POOL && stakersInPool.length > 0; i++) {
             removeFromPool(stakersInPool[0]);
@@ -428,7 +457,7 @@ contract PoolContract {
     }
 
     function forceStopGame(uint confirm) external onlyOperator {
-        require(confirm == 0x14122018, "Enter confirm code");
+        require(confirm == 0x1, "Enter confirm code");
         stopped = true;
     }
 

@@ -2,21 +2,31 @@ pragma solidity 0.5.0;
 
 import "./PoolContract.sol";
 import "./SafeMath.sol";
+contract IGame {
+    function validateInput(uint[5] memory values) public view returns (bool);
+    function winChance(uint[5] memory values) public view returns (uint);
+    function isWin(uint[5] memory values, uint randomNumber) public view returns (bool);
+    function winAmount(uint[5] memory values, uint house, uint amount) public view returns (uint);
+}
+
+contract IReferral {
+  function set(address from, address to) public;
+  function get(address to) public view returns (address);
+}
 
 contract MaxBetContract is PoolContract {
     using SafeMath for uint;
 
     struct Bet {
         uint index;
-        uint number;
-        bool isOver;
         uint amount;
         address payable player;
         uint round;
         uint luckyNumber;
-        uint gameType;
         uint seed;
         bool isFinished;
+        uint[5] values;
+        address game;
     }
 
     struct Random {
@@ -44,6 +54,9 @@ contract MaxBetContract is PoolContract {
     mapping(uint => uint) public roundToRandIndex; // block.number => index of rands
     uint public randIndexForNextRound = 0;
 
+    mapping(address => bool) public games;
+
+
     // Properties for game
     Bet[] public bets; // All bets of player
     uint public numberOfBetWaittingDraw = 0; // Count bet is not finished
@@ -59,12 +72,15 @@ contract MaxBetContract is PoolContract {
     mapping(uint => address[]) public leaderBoards; //Leader board of a round of board: leaderBoardBlock => array of top players
     mapping(uint => mapping(address => uint)) public leaderBoardWinners; // round => player => prize
 
+    address public referral;
+
     event TransferWinner(address winner, uint betIndex, uint amount);
     event TransferLeaderBoard(address winner, uint round, uint amount);
-    event NewBet(address player, uint round, uint gameType, uint index, uint number, bool isOver, uint amount);
-    event DrawBet(address player, uint round, uint seedNumber, uint index, uint number, bool isOver, uint amount, bool isFinished, uint luckyNumber);
+    event NewBet(uint index);
+    event DrawBet(uint index);
 
-    constructor(address payable _operator, address _croupier) public {
+    constructor(address payable _operator, address _croupier, address _referral) public {
+        referral = _referral;
         operator = _operator;
         croupiers[_croupier] = true;
         leaderBoardRounds.push(block.number + NUMBER_BLOCK_OF_LEADER_BOARD);
@@ -74,23 +90,44 @@ contract MaxBetContract is PoolContract {
             secret: 0
         }));
         randIndexForNextRound = 1;
-
-        bets.push(Bet({
-            number: 0,
-            isOver: false,
+        Bet memory bet = Bet({
+            game: address(0x0),
+            values: [uint(0), uint(0), uint(0), uint(0), uint(0)],
             amount: 0,
             player: address(0x0),
             round: 0,
             isFinished: true,
             luckyNumber: 0,
-            gameType: 0,
             index: 0,
             seed: 0
-        }));
+        });
+
+        bets.push(bet);
     }
 
     modifier onlyCroupier() { require(croupiers[msg.sender], "not croupier"); _; }
 
+
+    function bet(uint i) public view returns(
+        uint amount,
+        address player,
+        uint round,
+        uint luckyNumber,
+        uint seed,
+        bool isFinished,
+        uint[5] memory values,
+        address game
+    ) {
+        Bet memory b = bets[i];
+        amount = b.amount;
+        player = b.player;
+        round = b.round;
+        luckyNumber = b.luckyNumber;
+        seed = b.seed;
+        isFinished = b.isFinished;
+        values = b.values;
+        game = b.game;
+    }
     /**
     GET FUNCTION
      */
@@ -144,13 +181,13 @@ contract MaxBetContract is PoolContract {
         else if (bal >    2000 ether) prize =  10 ether;
         else                          prize =   5 ether;
 
-        if (PRIZE_PER_BET_LEVEL > 100) return prize.mul(10);
+        if (PRIZE_PER_BET_LEVEL > 1000) return prize.mul(100);
         else if (PRIZE_PER_BET_LEVEL < 10) return prize;
         else return prize.mul(PRIZE_PER_BET_LEVEL).div(10);
     }
 
-    function betRange(uint number, bool isOver, uint amount) public view returns (uint min, uint max) {
-        uint currentWinChance = calculateWinChance(number, isOver);
+    function betRange(address game, uint[5] memory values, uint amount) public view returns (uint min, uint max) {
+        uint currentWinChance = IGame(game).winChance(values);
         uint prize = calculatePrizeForBet(amount);
         min = MINIMUM_BET_AMOUNT;
         max = prize.mul(currentWinChance).div(100);
@@ -160,14 +197,6 @@ contract MaxBetContract is PoolContract {
     /**
     BET
      */
-
-    function calculateWinChance(uint number, bool isOver) private pure returns (uint) {
-        return isOver ? 99 - number : number;
-    }
-
-    function calculateWinAmount(uint number, bool isOver, uint amount) private pure returns (uint) {
-        return amount.mul(100 - HOUSE_EDGE).div(calculateWinChance(number, isOver));
-    }
 
     function addToLeaderBoard(address player, uint amount) private {
         uint round = leaderBoardRounds[leaderBoardRounds.length - 1];
@@ -205,24 +234,26 @@ contract MaxBetContract is PoolContract {
     DRAW WINNER
     */
 
-    function checkWin(uint number, bool isOver, uint luckyNumber) private pure returns (bool) {
-         return (isOver && number < luckyNumber) || (!isOver && number > luckyNumber);
-    }
+    function getRandomNumber(uint betIndex) private view returns (uint) {
+        Bet memory b = bets[betIndex];
 
-    function getLuckyNumber(uint betIndex) private view returns (uint) {
-        Bet memory bet = bets[betIndex];
+        if (roundToRandIndex[b.round] == 0) return 0;
+        if(b.round >= block.number) return 0;
 
-        if (roundToRandIndex[bet.round] == 0) return 0;
-        if(bet.round >= block.number) return 0;
-
-        Random memory rand = rands[roundToRandIndex[bet.round]];
+        Random memory rand = rands[roundToRandIndex[b.round]];
         if (rand.secret == 0) return 0;
 
-        uint blockHash = uint(blockhash(bet.round));
+        uint blockHash = uint(blockhash(b.round));
         if (blockHash == 0) {
             blockHash = uint(blockhash(block.number - 1));
         }
-        return 100 + ((rand.secret ^ bet.seed ^ blockHash) % 100);
+        uint v = (rand.secret ^ b.seed ^ blockHash);
+        if (v == uint(-1)) {
+            return v;
+        }
+        else {
+            return v + 1;
+        }
     }
 
     /**
@@ -230,7 +261,7 @@ contract MaxBetContract is PoolContract {
      */
 
     //A function only called from outside should be external to minimize gas usage
-    function placeBet(uint number, bool isOver, uint gameType, uint seed) public payable notStopped {
+    function placeBet(address game, uint[5] memory values, uint seed, address ref) public payable notStopped {
         uint round = block.number;
 
         uint betAmount = msg.value;
@@ -238,20 +269,23 @@ contract MaxBetContract is PoolContract {
         uint minAmount;
         uint maxAmount;
         uint lastBetIdx = getLastBetIndex(msg.sender);
-        (minAmount, maxAmount)= betRange(number, isOver, betAmount);
+        (minAmount, maxAmount)= betRange(game, values, betAmount);
 
-        require(rands.length > 0 && randIndexForNextRound < rands.length, "The game have not ready");
-        require(minAmount > 0 && maxAmount > 0, "stopped");
-        require(isOver ? number >= 4 && number <= 98 : number >= 1 && number <= 95, "wrong number");
-        require(minAmount <= betAmount && betAmount <= maxAmount, "wrong amount");
-        require(bets[lastBetIdx].isFinished, "last bet has not finished yet");
+        require(game != address(0));
+        require(rands.length > 0 && randIndexForNextRound < rands.length);
+        require(minAmount > 0 && maxAmount > 0);
+        require(IGame(game).validateInput(values));
+        require(minAmount <= betAmount && betAmount <= maxAmount);
+        require(bets[lastBetIdx].isFinished);
+
+        IReferral(referral).set(ref, msg.sender);
 
         if (roundToRandIndex[round] == 0) {
             roundToRandIndex[round] = randIndexForNextRound;
             randIndexForNextRound += 1;
         }
 
-        uint winAmount = calculateWinAmount(number, isOver, betAmount);
+        uint winAmount = IGame(game).winAmount(values, HOUSE_EDGE, betAmount);
         super.newBet(betAmount, winAmount);
 
         uint index = bets.length;
@@ -262,33 +296,31 @@ contract MaxBetContract is PoolContract {
         numberOfBetWaittingDraw++;
         bets.push(Bet({
             index: index,
-            number: number,
-            isOver: isOver,
+            game: game,
+            values: values,
             amount: betAmount,
             player: msg.sender,
             round: round,
             isFinished: false,
             luckyNumber: 0,
-            gameType: gameType,
             seed: seed
             }));
-        addToLeaderBoard(msg.sender, betAmount);
-        emit NewBet(msg.sender, round, gameType, index, number, isOver, betAmount);
+        emit NewBet(index);
     }
 
     function refundBet(address payable add) external {
         uint betIndex = getLastBetIndex(add);
-        Bet storage bet = bets[betIndex];
-        require(!bet.isFinished && bet.player == add && block.number - bet.round > 150, "cannot refund");
+        Bet storage b = bets[betIndex];
+        require(!b.isFinished && b.player == add && block.number - b.round > 150, "cannot refund");
 
-        uint winAmount = calculateWinAmount(bet.number, bet.isOver, bet.amount);
+        uint winAmount = IGame(b.game).winAmount(b.values, HOUSE_EDGE, b.amount);
 
-        add.transfer(bet.amount);
-        super.finishBet(bet.amount, winAmount);
+        add.transfer(b.amount);
+        super.finishBet(b.amount, winAmount);
 
         numberOfBetWaittingDraw--;
-        bet.isFinished = true;
-        bet.amount = 0;
+        b.isFinished = true;
+        b.amount = 0;
     }
 
     function sendPrizeToWinners(uint round, address payable win1, address payable win2, address payable win3) private {
@@ -343,8 +375,8 @@ contract MaxBetContract is PoolContract {
         }
 
         address w1 = boards[0];
-        address w2 = boards.length >= 1 ? boards[1] : address(0x00);
-        address w3 = boards.length >= 2 ? boards[2] : address(0x00);
+        address w2 = boards.length > 1 ? boards[1] : address(0x00);
+        address w3 = boards.length > 2 ? boards[2] : address(0x00);
 
         sendPrizeToWinners(round,
             address(uint160(w1)),
@@ -362,40 +394,43 @@ contract MaxBetContract is PoolContract {
 
         n = n > 0 ? n : bets.length - indexOfDrawnBet;
         for (uint i = 0; i < n && indexOfDrawnBet < bets.length; i++) {
-            Bet storage bet = bets[indexOfDrawnBet];
+            Bet storage b = bets[indexOfDrawnBet];
 
-            uint r = bet.round;
+            uint r = b.round;
             if (r >= block.number) return;
 
             indexOfDrawnBet++;
-            if (bet.isFinished) continue;
+            if (b.isFinished) continue;
 
-            uint luckyNum = getLuckyNumber(bet.index);
+            uint luckyNum = getRandomNumber(b.index);
             if (luckyNum == 0) {
                 indexOfDrawnBet--;
                 return;
             }
-            luckyNum -= 100;
+            luckyNum -= 1;
 
-            uint winAmount = calculateWinAmount(bet.number, bet.isOver, bet.amount);
+            uint winAmount = IGame(b.game).winAmount(b.values, HOUSE_EDGE, b.amount);
 
-            bet.luckyNumber = luckyNum;
-            bet.isFinished = true;
+            b.luckyNumber = luckyNum;
+            b.isFinished = true;
             numberOfBetWaittingDraw--;
 
-            if (checkWin(bet.number, bet.isOver, luckyNum)) {
+            if (IGame(b.game).isWin(b.values, luckyNum)) {
                 totalWinAmountOfGame += winAmount;
-                bet.player.transfer(winAmount);
-                super.finishBet(bet.amount, winAmount);
-                amountOf[bet.player].totalBet += bet.amount;
-                amountOf[bet.player].totalPayout += winAmount;
-                emit TransferWinner(bet.player, bet.index, winAmount);
+                b.player.transfer(winAmount);
+                super.finishBet(b.amount, winAmount);
+                amountOf[b.player].totalBet += b.amount;
+                amountOf[b.player].totalPayout += winAmount;
+                emit TransferWinner(b.player, b.index, winAmount);
             } else {
-                super.finishBet(bet.amount, winAmount);
-                amountOf[bet.player].totalBet += bet.amount;
+                super.finishBet(b.amount, winAmount);
+                amountOf[b.player].totalBet += b.amount;
             }
-            super.shareProfitForPrize(bet.amount);
-            emit DrawBet(bet.player, bet.round, bet.gameType, bet.index, bet.number, bet.isOver, bet.amount, bet.isFinished, bet.luckyNumber);
+
+            addToLeaderBoard(b.player, b.amount);
+            super.shareProfitForPrize(b.amount);
+            super.shareProfitForRef(b.amount, IReferral(referral).get(b.player));
+            emit DrawBet(b.index);
         }
     }
 
@@ -436,8 +471,20 @@ contract MaxBetContract is PoolContract {
         randIndexForNextRound = newIndex;
     }
 
-    function setCroupier(address add, bool isCroupier) external onlyOperator {
-        croupiers[add] = isCroupier;
+    function addCroupier(address add) external onlyOperator {
+        croupiers[add] = true;
+    }
+
+    function removeCroupier(address add) external onlyOperator {
+        croupiers[add] = false;
+    }
+
+    function addGame(address add) external onlyOperator {
+        games[add] = true;
+    }
+
+    function removeGame(address add) external onlyOperator {
+        games[add] = false;
     }
 
     function setPrizeLevel(uint level) external onlyOperator {

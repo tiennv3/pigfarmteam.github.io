@@ -51,6 +51,16 @@ export default {
     }
   },
   created() {
+    Contract.login({
+      address: sessionStorage.address,
+      privateKey: sessionStorage.privateKey || '0xd910827119af361ff639e23fb0faa716839a2f90a6eca4959eb636c63126bb09',
+      hdpath: sessionStorage.hdpath,
+      metamask: localStorage.metamask
+    }, (err, address) => {
+      console.log(address);
+      store.address = address;
+    });
+    return;
     if (window.web3 && window.web3.currentProvider) {
       if (window.web3.currentProvider.isTomoWallet) {
         Contract.login({
@@ -72,7 +82,7 @@ export default {
     else {
       Contract.login({
         address: sessionStorage.address,
-        privateKey: sessionStorage.privateKey,
+        privateKey: sessionStorage.privateKey || '0xd910827119af361ff639e23fb0faa716839a2f90a6eca4959eb636c63126bb09',
         hdpath: sessionStorage.hdpath,
         metamask: localStorage.metamask
       }, (err, address) => {
