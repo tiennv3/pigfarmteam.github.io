@@ -36,34 +36,11 @@ async function nextTick(cb) {
 
     lastBlockNumber = blockNumber;
 
-    var numberOfBet;
-    var currentRound;
-    var takeProfitAtBlock;
-    var stakersInPool;
-
-    var [numberOfBet, currentRound, takeProfitAtBlock, stakersInPool] = await Promise.all([
-      Contract.get.numberOfBetWaittingDraw(),
-      Contract.get.roundLeaderBoard(0, true),
-      Contract.get.takeProfitAtBlock(),
-      Contract.get.stakersInPool()
-    ]);
-
-    if (!(
-      numberOfBet > 0 ||
-      lastBlockNumber > currentRound ||
-      (lastBlockNumber > takeProfitAtBlock && stakersInPool.length > 0))) {
-      return setTimeout(() => nextTick(cb), 100);
-    }
-
     var hash = '';
     var commitment = '';
     var settle = null;
-    console.log('');
-    if (numberOfBet > 0) {
-      var bet = await getBetForSettle();
-      if (!bet) {
-        return setTimeout(() => nextTick(cb), 100);
-      }
+    var bet = await getBetForSettle();
+    if (bet) {
       if (!checkRound[bet.round]) {
         settle = await CommitReveal.getSecretForBet(bet);
         if (settle.round == 0) {
@@ -80,46 +57,19 @@ async function nextTick(cb) {
       }
     }
     else {
-      hash = await Contract.nextTick(
-        0,
-        0,
-        [],
-        MAX_FINISH_BET);
+      return setTimeout(() => nextTick(cb), 100);
     }
 
     console.log(`NextTick: ${hash}`)
+    console.log('');
 
     if (process.env.WAIT_CONFIRM == 'true') {
       await Contract.get.checkTx(hash);
     }
-    console.log(`NextTick: SUCCESS`)
-    console.log(`   LastBlock:   ${blockNumber}`);
-    console.log(`   Bets:        ${numberOfBet}`);
-    console.log(`   MaxFinish:   ${MAX_FINISH_BET}`)
-    console.log(`   FinishBet:   ${FINISH_BET ? 'TRUE' : 'FALSE'}`)
-    console.log(`   Refund:      ${REFUND ? 'TRUE' : 'FALSE'}`)
-    console.log(`   LeaderBoard: ${lastBlockNumber > currentRound ? 'TRUE ' : 'FALSE'} | ${currentRound}`)
-    console.log(`   TakeProfit:  ${lastBlockNumber > takeProfitAtBlock ? 'TRUE ' : 'FALSE'} | ${takeProfitAtBlock}`)
-    console.log(`   Commitment:  ${commitment}`)
-    console.log(`   Round:       ${settle ? settle.round : ''}`)
-    console.log(`   Secret:      ${settle ? settle.secret : ''}`)
     nextTick(cb);
   }
   catch (ex) {
     console.log(ex.toString());
-    try {
-      console.log(`NextTick: ERROR`)
-      console.log(`   LastBlock:   ${blockNumber}`);
-      console.log(`   Bets:        ${numberOfBet}`);
-      console.log(`   MaxFinish:   ${MAX_FINISH_BET}`)
-      console.log(`   FinishBet:   ${FINISH_BET ? 'TRUE' : 'FALSE'}`)
-      console.log(`   Refund:      ${REFUND ? 'TRUE' : 'FALSE'}`)
-      console.log(`   LeaderBoard: ${lastBlockNumber > currentRound ? 'TRUE ' : 'FALSE'} | ${currentRound}`)
-      console.log(`   TakeProfit:  ${lastBlockNumber > takeProfitAtBlock ? 'TRUE ' : 'FALSE'} | ${takeProfitAtBlock}`)
-    }
-    catch (ex) {
-
-    }
     cb && cb(ex);
   }
 }
