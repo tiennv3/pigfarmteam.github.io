@@ -19,25 +19,14 @@ async function getSecret(commitment) {
 }
 
 async function getSecretForBet(bet) {
-  try {
-    if (bet) {
-      var randIndex = await Contract.get.roundToRandIndex(bet.round);
-      var rand = await Contract.get.rand(randIndex);
-      var secret = rand.secret == '0' ? await getSecret(rand.commitment) : 0;
-
-      return {
-        round: secret ? bet.round : 0,
-        secret
-      };
-    }
-  } catch (ex) {
-    console.log(ex);
-  }
+  var randIndex = await Contract.get.roundToRandIndex(bet.round);
+  var rand = await Contract.get.rand(randIndex);
+  var secret = rand.secret == '0' ? await getSecret(rand.commitment) : 0;
 
   return {
-    round: 0,
-    secret: 0
-  }
+    round: secret ? bet.round : 0,
+    secret
+  };
 }
 
 

@@ -14,7 +14,10 @@ async function getBetForSettle() {
     var bet = await Contract.get.bet(i);
     return bet
   } catch (ex) {
-    // console.log(ex);
+    var msg = ex.toString();
+    if (msg.indexOf('Invalid JSON RPC')) {
+      throw new Error('Invalid JSON RPC')
+    }
   }
 
   return null;
@@ -51,7 +54,7 @@ async function nextTick(cb) {
     }
   }
   catch (ex) {
-    console.log(ex.toString());
+    console.error('server > bot > index > 57 >', ex.toString());
     cb && cb(ex);
   }
 }
@@ -73,6 +76,7 @@ module.exports = {
         // }, 1000);
       }
       catch (ex) {
+        console.error('server > bot > index > 79 >', ex.toString());
         return callback && callback(ex);
       }
     });
