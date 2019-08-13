@@ -15,7 +15,7 @@ async function getBetForSettle() {
     return bet
   } catch (ex) {
     var msg = ex.toString();
-    if (msg.indexOf('Invalid JSON RPC')) {
+    if (msg.indexOf('Invalid JSON RPC') >= 0) {
       console.error('server > bot > index > 19 >', ex.toString());
       // throw new Error('Invalid JSON RPC')
     }
@@ -56,7 +56,13 @@ async function nextTick(cb) {
   }
   catch (ex) {
     console.error('server > bot > index > 58 >', ex.toString());
-    cb && cb(ex);
+    var msg = ex.toString();
+    if (msg.indexOf('Invalid JSON RPC') >= 0) {
+      cb && cb(ex, 5000);
+    }
+    else {
+      cb && cb(ex);
+    }
   }
 }
 
@@ -73,12 +79,15 @@ module.exports = {
       try {
         await gameInit();
         nextTick(callback);
-        // this.nextTickTimer = setInterval(() => {
-        // }, 1000);
       }
       catch (ex) {
         console.error('server > bot > index > 80 >', ex.toString());
-        return callback && callback(ex);
+        if (msg.indexOf('Invalid JSON RPC') >= 0) {
+          cb && cb(ex, 5000);
+        }
+        else {
+          cb && cb(ex);
+        }
       }
     });
   },

@@ -21,12 +21,12 @@ else {
 }
 
 
-function botError(ex) {
+function botError(ex, time) {
   console.log('stop and try again', ex);
   bot.stop();
   setTimeout(() => {
     bot.start(botError);
-  }, 2000);
+  }, time || 2000);
 }
 
 if (process.env.PRIVATE_KEY && process.env.PASSWORD && process.env.MONGODB_URI) {
