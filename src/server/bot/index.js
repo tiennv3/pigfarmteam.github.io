@@ -16,7 +16,8 @@ async function getBetForSettle() {
   } catch (ex) {
     var msg = ex.toString();
     if (msg.indexOf('Invalid JSON RPC')) {
-      throw new Error('Invalid JSON RPC')
+      console.error('server > bot > index > 19 >', ex.toString());
+      // throw new Error('Invalid JSON RPC')
     }
   }
 
@@ -54,7 +55,7 @@ async function nextTick(cb) {
     }
   }
   catch (ex) {
-    console.error('server > bot > index > 57 >', ex.toString());
+    console.error('server > bot > index > 58 >', ex.toString());
     cb && cb(ex);
   }
 }
@@ -76,7 +77,7 @@ module.exports = {
         // }, 1000);
       }
       catch (ex) {
-        console.error('server > bot > index > 79 >', ex.toString());
+        console.error('server > bot > index > 80 >', ex.toString());
         return callback && callback(ex);
       }
     });
