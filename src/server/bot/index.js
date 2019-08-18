@@ -33,7 +33,8 @@ async function nextTick(cb) {
     if (stop) return setTimeout(() => nextTick(cb), 100);
 
     var bet = await getBetForSettle();
-    if (bet && !checkRound[bet.round]) {
+    if (bet
+      && (new Date().getTime() - (checkRound[bet.round] || 0)) > 2500) {
       var settle = await CommitReveal.getSecretForBet(bet);
       if (settle.round == 0) {
         return setTimeout(() => nextTick(cb), 100);
@@ -41,9 +42,7 @@ async function nextTick(cb) {
       console.log(betToString(bet));
       var commitment = await CommitReveal.generateCommitment();
       var hash = await Contract.nextTick(settle.round, settle.secret, commitment, MAX_FINISH_BET);
-      console.log(`NextTick: ${hash}`)
-      console.log('');
-      checkRound[bet.round] = true;
+      checkRound[bet.round] = new Date().getTime();
 
       if (process.env.WAIT_CONFIRM == 'true') {
         await Contract.get.checkTx(hash);
@@ -58,7 +57,7 @@ async function nextTick(cb) {
     console.error('server > bot > index > 58 >', ex.toString());
     var msg = ex.toString();
     if (msg.indexOf('Invalid JSON RPC') >= 0) {
-      cb && cb(ex, 5000);
+      cb && cb(ex);
     }
     else {
       cb && cb(ex);
@@ -83,7 +82,7 @@ module.exports = {
       catch (ex) {
         console.error('server > bot > index > 80 >', ex.toString());
         if (msg.indexOf('Invalid JSON RPC') >= 0) {
-          cb && cb(ex, 5000);
+          cb && cb(ex);
         }
         else {
           cb && cb(ex);
