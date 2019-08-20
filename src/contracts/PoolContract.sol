@@ -26,10 +26,10 @@ contract PoolContract {
     address payable public operator;
     address private newOperator;
 
-    uint public balanceOfOperator = 0;      // Cannot use for bet
+    uint public balanceOfOperator = 0;     // Cannot use for bet
     uint public balanceOfStakerOut = 0;    // Cannot use for bet
     uint public balanceOfBet = 0;          // Total balance of are not finished
-    uint public lockBalanceForGame = 0;        // Don't use share value
+    uint public lockBalanceForGame = 0;    // Don't use share value
     uint public totalPrize = 0;            // Cannot use for bet, totalPrize for leader board
 
 

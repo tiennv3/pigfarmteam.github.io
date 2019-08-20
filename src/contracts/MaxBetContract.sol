@@ -14,7 +14,6 @@ contract MaxBetContract is PoolContract {
         address payable player;
         uint round;
         uint luckyNumber;
-        uint gameType;
         uint seed;
         bool isFinished;
     }
@@ -61,7 +60,7 @@ contract MaxBetContract is PoolContract {
 
     event TransferWinner(address winner, uint betIndex, uint amount);
     event TransferLeaderBoard(address winner, uint round, uint amount);
-    event NewBet(address player, uint round, uint gameType, uint index, uint number, bool isOver, uint amount);
+    event NewBet(address player, uint round, uint index, uint number, bool isOver, uint amount);
     event DrawBet(address player, uint round, uint seedNumber, uint index, uint number, bool isOver, uint amount, bool isFinished, uint luckyNumber);
 
     constructor(address payable _operator, address _croupier) public {
@@ -83,7 +82,6 @@ contract MaxBetContract is PoolContract {
             round: 0,
             isFinished: true,
             luckyNumber: 0,
-            gameType: 0,
             index: 0,
             seed: 0
         }));
@@ -230,7 +228,7 @@ contract MaxBetContract is PoolContract {
      */
 
     //A function only called from outside should be external to minimize gas usage
-    function placeBet(uint number, bool isOver, uint gameType, uint seed) public payable notStopped {
+    function placeBet(uint number, bool isOver, uint seed) public payable notStopped {
         uint round = block.number;
 
         uint betAmount = msg.value;
@@ -269,11 +267,10 @@ contract MaxBetContract is PoolContract {
             round: round,
             isFinished: false,
             luckyNumber: 0,
-            gameType: gameType,
             seed: seed
             }));
         addToLeaderBoard(msg.sender, betAmount);
-        emit NewBet(msg.sender, round, gameType, index, number, isOver, betAmount);
+        emit NewBet(msg.sender, round, index, number, isOver, betAmount);
     }
 
     function refundBet(address payable add) external {
@@ -395,7 +392,7 @@ contract MaxBetContract is PoolContract {
                 amountOf[bet.player].totalBet += bet.amount;
             }
             super.shareProfitForPrize(bet.amount);
-            emit DrawBet(bet.player, bet.round, bet.gameType, bet.index, bet.number, bet.isOver, bet.amount, bet.isFinished, bet.luckyNumber);
+            emit DrawBet(bet.player, bet.round, bet.index, bet.number, bet.isOver, bet.amount, bet.isFinished, bet.luckyNumber);
         }
     }
 
