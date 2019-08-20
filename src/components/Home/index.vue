@@ -3,14 +3,24 @@
     <div class="home-container">
       <div class="home-game">
         <Navbar ref="nav"/>
-        <div class="home-current-game">
+        <!-- <div class="home-current-game">
           <YourBet :isOver="bet.isOver" :number="bet.number" :amount="bet.amount"/>
           <LuckyNumber :number="luckyNumber" :isAutoRoll="store.isAutoRoll" :isDrawing="store.isRolling"/>
         </div>
-        <Bet ref="bet" />
-        <RollButton class="roll-btn"
+        <Bet ref="bet" /> -->
+        <!-- <RollButton class="roll-btn"
           :isRolling="store.isRolling"
-          @click="roll"/>
+          @click="roll"/> -->
+        <div style="text-align: center; color: #ffffff; font-size: 20px;">
+          We are updating MaxBet for new features, more security, and multi-language
+          <br/>
+          <br/>
+          If you are staker, withdraw all your fund please.
+
+          <br/>
+          <br/>
+          Thank you.
+        </div>
         <div v-if="showResult" class="result-modal animated fadeIn" @click="showResult = false">
           <button class="modal-close-btn" @click="showResult = false" />
           <div>
