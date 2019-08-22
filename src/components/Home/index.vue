@@ -172,7 +172,6 @@ export default {
     async getReferralReward(add) {
       if (!add) return;
       this.referralReward = await Contract.get.referralReward(add);
-      console.log(this.referralReward, add)
     },
     updateBet() {
       clearTimeout(this.timeoutRoll);

@@ -3,7 +3,6 @@ const Web3 = require('web3');
 module.exports = {
   toTOMO(bigNum, isInt, noRound) {
     var v = Web3.utils.fromWei(bigNum.toString(), 'ether');
-    console.log(v)
     v = parseFloat(v);
     if (isInt) {
       return Math.floor(v);

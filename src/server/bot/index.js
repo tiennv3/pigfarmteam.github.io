@@ -4,6 +4,7 @@ const gameInit = require('./gameInit');
 const db = require('../db');
 
 var checkBetErrorTimer = 0;
+var checkTakeProfitTimer = 0;
 var currentPrivateKey = process.env.PRIVATE_KEY;
 
 var stop = false;
@@ -91,6 +92,23 @@ async function checkBetErrorAndTrySettleAgain(cb) {
     }, 5000);
   }
 }
+
+async function checkTakeProfitAndSettleLeaderBoard(cb) {
+  clearTimeout(checkTakeProfitTimer);
+  if (stop) return;
+
+  try {
+    var takeProfitAtBlock = await Contract.get.takeProfitAtBlock();
+    var leaderBoartAtBlock = await Contract.get.roundLeaderBoard();
+  }
+  catch (ex) {
+    cb && cb(ex);
+    checkTakeProfitTimer = setTimeout(() => {
+      checkBetErrorAndTrySettleAgain(cb)
+    }, 5000);
+  }
+}
+
 
 async function callSettle(bet) {
   if (bet) {
