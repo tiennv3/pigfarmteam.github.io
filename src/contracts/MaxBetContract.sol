@@ -37,7 +37,7 @@ contract MaxBetContract is PoolContract {
     uint public PRIZE_PER_BET_LEVEL = 10;
     uint public REWARD_FOR_REFERRAL = 1000; // 1 / 1000 (0.1%) of bet amount for referral. max 0.2%
 
-    address payable referralContract;
+    address payable public referralContract;
 
     // Just for display on app
     uint public totalBetOfGame = 0;

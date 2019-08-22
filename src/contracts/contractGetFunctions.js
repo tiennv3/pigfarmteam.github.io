@@ -396,5 +396,12 @@ module.exports = {
       .accounts(add)
       .call()
       .then(n => parseInt(n) > 0);
+  },
+  referralReward: function(add) {
+    var ReferralContract = new web3.eth.Contract(CONTRACT_CONFIG.ABI_REFERRAL, CONTRACT_CONFIG.REFERRAL_ADDRESS)
+    return ReferralContract.methods
+      .rewards(add)
+      .call()
+      .then(n => utils.toTOMO(n, false, true));
   }
 }

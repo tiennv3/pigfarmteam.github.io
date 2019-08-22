@@ -3,6 +3,7 @@
     <div class="home-container">
       <div class="home-game">
         <Navbar ref="nav"/>
+
         <div class="home-current-game">
           <YourBet :isOver="bet.isOver" :number="bet.number" :amount="bet.amount"/>
           <LuckyNumber :number="luckyNumber" :isAutoRoll="store.isAutoRoll" :isDrawing="store.isRolling"/>
@@ -23,6 +24,23 @@
       </div>
       <div class="home-gameinfo">
         <GameInfo />
+
+        <div v-if="store.address" style="text-align: center; background: rgba(255, 255, 255, 0.17); padding: 10px 20px; margin-top: 10px;">
+          <div style="color: #ffffff;">Your Referral Reward
+            <div style="color: rgb(240, 194, 42);">{{ referralReward }} TOMO</div>
+          </div>
+          <div class="mt10" >
+            <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io?${store.address}`">
+              <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
+            </button>
+            <button v-if="referralReward > 0" class="referral-coppy-btn" @click="withdrawReferralReward">
+              <img src="./withdraw.svg" width="15px" />&nbsp;&nbsp;{{isWithdrawing ? 'Withdrawing' : 'Withdraw'}}
+            </button>
+          </div>
+          <div style="font-size: 13px; font-family: sans-serif; color: gray;">
+            Share our game to receive 0.1% of the bet amount for each bet.
+          </div>
+        </div>
       </div>
     </div>
     <Footer />
@@ -41,6 +59,7 @@ import Contract from '../../contracts';
 import Footer from '../Footer';
 import utils from '../../utils';
 import ConnectToMaxbet from '../ConnectToMaxbet';
+import ClipboardJS from 'clipboard';
 
 export default {
   components: {
@@ -61,6 +80,9 @@ export default {
       iconResult: '',
       houseEdge: 1,
       isCheckingLogon: true,
+      isCopied: false,
+      referralReward: 0,
+      isWithdrawing: false,
       bet: {
         index: 0,
         isOver: false,
@@ -76,6 +98,7 @@ export default {
     this.houseEdge = await Contract.get.houseEdge();
     if (this.store.address) {
       this.checkLogon(this.store.address);
+      this.getReferralReward(this.store.address);
     }
   },
   mounted() {
@@ -84,6 +107,14 @@ export default {
     this.subcribeDrawBet();
     Contract.get.onListenEvent('NEW_BLOCK', e => this.tryGetMyBet(this.store.address), 'HOME_NEW_BLOCK');
     window.scrollTo(0, 0);
+    var clipboard = new ClipboardJS('.referral-coppy-btn');
+    clipboard.on('success', (e) => {
+      this.isCopied = true;
+      setTimeout(() => {
+        this.isCopied = false;
+      }, 5000);
+      e.clearSelection();
+    });
   },
   watch: {
     'store.address': {
@@ -100,8 +131,8 @@ export default {
         }
         clearTimeout(this.timeoutRoll);
         clearTimeout(this.timeoutCheckRoll);
-        console.log(newAddress, this.store.address)
         this.checkLogon(newAddress);
+        this.getReferralReward(newAddress);
         this.updateBet();
       }
     }
@@ -114,10 +145,34 @@ export default {
     Contract.get.offListenEvent('DrawBet', 'HOME_DRAW_BET');
   },
   methods: {
+    async withdrawReferralReward() {
+      try {
+        if (this.isWithdrawing) return;
+        this.isWithdrawing = true;
+        var hash = await Contract.withdrawReward();
+        await Contract.get.checkTx(hash);
+        await this.getReferralReward(this.store.address);
+        this.isWithdrawing = false;
+      }
+      catch (ex) {
+        this.isWithdrawing = false;
+        var errMsg = ex.toString().toLowerCase();
+        if (errMsg.indexOf('user denied transaction signature') >= 0 || errMsg.indexOf('cancelled') >= 0) {
+          return;
+        }
+        window.handleError(ex);
+      }
+    },
     async checkLogon(add) {
+      if (!add) return;
       this.isCheckingLogon = true;
       this.store.isLogon = await Contract.get.isLogon(add);
       this.isCheckingLogon = false;
+    },
+    async getReferralReward(add) {
+      if (!add) return;
+      this.referralReward = await Contract.get.referralReward(add);
+      console.log(this.referralReward, add)
     },
     updateBet() {
       clearTimeout(this.timeoutRoll);
@@ -361,6 +416,21 @@ export default {
 
 .result-modal .payout {
   font-size: 40px;
+}
+.referral-coppy-btn {
+  font-size: 15px;
+  font-family: 'Baloo', serif;
+  color: #268bd8;
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+  background: rgba(3, 169, 244, 0.1);
+  border: none;
+  min-height: 22px;
+  cursor: pointer;
+  outline: none;
 }
 
 </style>

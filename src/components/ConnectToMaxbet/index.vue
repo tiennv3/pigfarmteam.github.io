@@ -1,12 +1,14 @@
 <template>
   <div style="padding: 20px;">
-    <button v-if="!isLoging" class="btn warning" @click="login">
-      Connect to Play and Stake
-      <br/>with Maxbet. It's free!
-    </button>
-    <button v-else class="btn warning">
-      Connecting...
-    </button>
+    <div>
+      <button v-if="!isLoging" class="btn warning" @click="login">
+        Connect to Play and Stake
+        <br/>with Maxbet. It's free!
+      </button>
+      <button v-else class="btn warning">
+        Connecting...
+      </button>
+    </div>
   </div>
 </template>
 
@@ -24,6 +26,7 @@ export default {
   methods: {
     async login() {
       try {
+        if (this.isLoging) return;
         this.isLoging = true;
         var ref = localStorage.referralAddress;
         if (!web3.utils.isAddress(ref)) {

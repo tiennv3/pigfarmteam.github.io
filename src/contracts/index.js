@@ -562,5 +562,28 @@ module.exports = {
           .on('error', ex => reject(ex));
       });
     }
+  },
+  withdrawReward: function() {
+    var msg = checkBeforeDoTransaction();
+    if (msg) {
+      return new Promise((resolve, reject) => {
+        reject(new Error(msg));
+      })
+    }
+    else {
+      return new Promise((resolve, reject) => {
+        var ReferralContract = new web3.eth.Contract(CONTRACT_CONFIG.ABI_REFERRAL, CONTRACT_CONFIG.REFERRAL_ADDRESS)
+        return ReferralContract.methods
+          .withdraw()
+          .send({
+            from: address,
+            to: CONTRACT_CONFIG.ADDRESS,
+            gasLimit: web3.utils.toHex(1000000),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('0.25', 'gwei'))
+          })
+          .on('transactionHash', hash => resolve(hash))
+          .on('error', ex => reject(ex));
+      });
+    }
   }
 }

@@ -349,24 +349,6 @@ module.exports = [
 	},
 	{
 		"constant": false,
-		"inputs": [
-			{
-				"name": "add",
-				"type": "address"
-			},
-			{
-				"name": "isCroupier",
-				"type": "bool"
-			}
-		],
-		"name": "setCroupier",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
 		"inputs": [],
 		"name": "quitPool",
 		"outputs": [],
@@ -498,6 +480,20 @@ module.exports = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "addCroupier",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -856,6 +852,20 @@ module.exports = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "add",
+				"type": "address"
+			}
+		],
+		"name": "removeCroupier",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1251,10 +1261,6 @@ module.exports = [
 			},
 			{
 				"name": "_croupier",
-				"type": "address"
-			},
-			{
-				"name": "_referral",
 				"type": "address"
 			}
 		],
