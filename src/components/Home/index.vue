@@ -30,7 +30,7 @@
             <div style="color: rgb(240, 194, 42);">{{ referralReward }} TOMO</div>
           </div>
           <div class="mt10" >
-            <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io?${store.address}`">
+            <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io#${store.address}`">
               <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
             </button>
             <button v-if="referralReward > 0" class="referral-coppy-btn" @click="withdrawReferralReward">

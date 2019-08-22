@@ -14,10 +14,11 @@ window.handleError = (ex) => {
   store.showError(ex && ex.toString() || 'Have an error, refresh and try again please!');
 }
 
-if (location.search) {
-  var v = location.search.substring(1);
+if (location.hash) {
+  var v = location.hash.substring(1);
   if (web3.utils.isAddress(v)) {
     localStorage.referralAddress = v;
+    location.hash = '';
   }
 }
 
