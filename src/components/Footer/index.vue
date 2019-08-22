@@ -9,7 +9,7 @@
     <a href="https://github.com/pigfarmteam/maxbet" class="icon">
       <img src="./github-logo.svg" alt="github" height="35px">
     </a>
-    <a href="https://scan.tomochain.com/address/0x305f55a3d55e01eed0b2b33fa1fd035ac5d086f7" class="icon">
+    <a href="https://scan.tomochain.com/address/0xbf1dcb735e512b731abd3404c15df6431bd03d42" class="icon">
       <img src="./tomo-scan-logo.svg" alt="github" height="35px">
     </a>
     <div class="mt10" @click="setting">

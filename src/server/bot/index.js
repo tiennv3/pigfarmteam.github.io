@@ -107,7 +107,7 @@ module.exports = {
     stop = false;
     if (shouldChangePrivateKey && !isNaN(parseInt(currentPrivateKey))) {
       var nextPK = parseInt(currentPrivateKey) + 1;
-      nextPK = nextPK % 5;
+      nextPK = (nextPK % 2) + 1;
       currentPrivateKey = process.env[`PK${nextPK}`]
     }
     Contract.login({
