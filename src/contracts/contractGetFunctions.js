@@ -363,16 +363,10 @@ module.exports = {
       .call()
       .then(n => parseInt(n));
   },
-  rand: function(index) {
+  commitment: function(index) {
     return LuckyContract
       .methods
-      .rands(index)
-      .call()
-  },
-  getLastRand: function() {
-    return LuckyContract
-      .methods
-      .getLastRand()
+      .commitments(index)
       .call()
   },
   indexOfDrawnBet: function() {
@@ -382,17 +376,10 @@ module.exports = {
       .call()
       .then(n => parseInt(n));
   },
-  roundToRandIndex: function(round) {
+  numberOfCommitment: function() {
     return LuckyContract
       .methods
-      .roundToRandIndex(round)
-      .call()
-      .then(n => parseInt(n));
-  },
-  randIndexForNextRound: function() {
-    return LuckyContract
-      .methods
-      .randIndexForNextRound()
+      .numberOfCommitment()
       .call()
       .then(n => parseInt(n));
   },
@@ -402,5 +389,12 @@ module.exports = {
       .PRIZE_PER_BET_LEVEL()
       .call()
       .then(n => parseInt(n));
+  },
+  isLogon: function(add) {
+    return LuckyContract
+      .methods
+      .accounts(add)
+      .call()
+      .then(n => parseInt(n) > 0);
   }
 }

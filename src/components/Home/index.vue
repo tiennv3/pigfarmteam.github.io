@@ -3,24 +3,15 @@
     <div class="home-container">
       <div class="home-game">
         <Navbar ref="nav"/>
-        <!-- <div class="home-current-game">
+        <div class="home-current-game">
           <YourBet :isOver="bet.isOver" :number="bet.number" :amount="bet.amount"/>
           <LuckyNumber :number="luckyNumber" :isAutoRoll="store.isAutoRoll" :isDrawing="store.isRolling"/>
         </div>
-        <Bet ref="bet" /> -->
-        <!-- <RollButton class="roll-btn"
+        <Bet ref="bet" />
+        <ConnectToMaxbet v-if="!store.isLogon && !isCheckingLogon" />
+        <RollButton v-if="store.isLogon" class="roll-btn"
           :isRolling="store.isRolling"
-          @click="roll"/> -->
-        <div style="text-align: center; color: #ffffff; font-size: 20px;">
-          We are updating MaxBet for new features, more security, and multi-language
-          <br/>
-          <br/>
-          If you are staker, withdraw all your fund please.
-
-          <br/>
-          <br/>
-          Thank you.
-        </div>
+          @click="roll"/>
         <div v-if="showResult" class="result-modal animated fadeIn" @click="showResult = false">
           <button class="modal-close-btn" @click="showResult = false" />
           <div>
@@ -49,6 +40,8 @@ import _store from '../../store';
 import Contract from '../../contracts';
 import Footer from '../Footer';
 import utils from '../../utils';
+import ConnectToMaxbet from '../ConnectToMaxbet';
+
 export default {
   components: {
     RollButton,
@@ -57,7 +50,8 @@ export default {
     YourBet,
     Bet,
     GameInfo,
-    Footer
+    Footer,
+    ConnectToMaxbet
   },
   data() {
     return {
@@ -66,6 +60,7 @@ export default {
       showResult: false,
       iconResult: '',
       houseEdge: 1,
+      isCheckingLogon: true,
       bet: {
         index: 0,
         isOver: false,
@@ -79,6 +74,9 @@ export default {
   },
   async created() {
     this.houseEdge = await Contract.get.houseEdge();
+    if (this.store.address) {
+      this.checkLogon(this.store.address);
+    }
   },
   mounted() {
     this.updateBet();
@@ -89,7 +87,7 @@ export default {
   },
   watch: {
     'store.address': {
-      handler() {
+      handler(newAddress) {
         this.luckyNumber = 0;
         this.bet = {
           index: 0,
@@ -102,6 +100,8 @@ export default {
         }
         clearTimeout(this.timeoutRoll);
         clearTimeout(this.timeoutCheckRoll);
+        console.log(newAddress, this.store.address)
+        this.checkLogon(newAddress);
         this.updateBet();
       }
     }
@@ -114,6 +114,11 @@ export default {
     Contract.get.offListenEvent('DrawBet', 'HOME_DRAW_BET');
   },
   methods: {
+    async checkLogon(add) {
+      this.isCheckingLogon = true;
+      this.store.isLogon = await Contract.get.isLogon(add);
+      this.isCheckingLogon = false;
+    },
     updateBet() {
       clearTimeout(this.timeoutRoll);
       this.tryGetMyBet(this.store.address);
@@ -227,7 +232,6 @@ export default {
           var bet = await Contract.get.bet(betIndex);
           this.store.isRolling = bet.isFinished ? false : this.store.isRolling;
         }, 30000);
-        debugger;
 
         var hash = await Contract.placeBet(this.bet.amount, this.bet.number, this.bet.isOver);
         this.$refs.nav && this.$refs.nav.addBalance(-this.bet.amount, false, true);

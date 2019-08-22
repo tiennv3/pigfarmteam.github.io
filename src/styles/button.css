@@ -20,6 +20,18 @@
   background: #076fb5;
 }
 
+.btn.warning {
+  border-radius: 10px;
+  background: #ff9800;
+  border: none;
+  color: #ffffff;
+
+}
+
+.btn.warning:hover {
+  background: #de8400;
+}
+
 .btn.secondary {
   border: none;
   background: transparent;

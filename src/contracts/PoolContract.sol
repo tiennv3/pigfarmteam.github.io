@@ -2,16 +2,33 @@ pragma solidity 0.5.0;
 
 import "./SafeMath.sol";
 
+contract TRC20 {
+    function totalSupply() public view returns (uint256);
+
+    function balanceOf(address _who) public view returns (uint256);
+
+    function transfer(address _to, uint256 _value) public returns (bool);
+
+    function allowance(address _owner, address _spender) public view returns (uint256);
+
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool);
+
+    function approve(address _spender, uint256 _value) public returns (bool);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
+
 contract PoolContract {
     using SafeMath for uint;
 
-    uint constant public PERCENT_OF_REVENUE_FOR_OPERATOR = 10;
-    uint constant public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 10;
     uint constant public WITHDRAW_FEE = 10 ether;
     uint constant public MAX_STAKER_IN_POOL = 20;
     uint constant public MIN_STAKE_AMOUNT = 500 ether;
-    uint constant public NUMBER_BLOCK_OF_LOCK_STAKE = 10;
     uint constant public NUMBER_BLOCK_OF_TAKE_REVENUE = 900;
+
+    uint public PERCENT_OF_REVENUE_FOR_OPERATOR = 10;
+    uint public PERCENT_OF_REVENUE_FOR_LEADER_BOARD = 1000; // 1/1000 (0.1%) of bet amount for leader board, max 0.2%
 
     struct Stake {
         uint amount;
@@ -40,6 +57,8 @@ contract PoolContract {
     address[] public stakers;
     uint public takeProfitAtBlock = 0;
 
+    mapping(address => uint) public accounts;
+
     event NewStake(address staker, uint amount);
     event QuitPool(address staker, uint amount);
     event Distribute(uint blockNumber, uint pool, uint totalProfitOrLoss, bool isLoss, address staker, uint stakeAmount, uint profitOrLoss);
@@ -55,6 +74,21 @@ contract PoolContract {
     modifier onlyOperator() { require(operator == msg.sender, "only operator can do this action"); _; }
     modifier notStopped() { require(!stopped, "stopped"); _; }
     modifier isStopped() { require(stopped, "not stopped"); _; }
+    modifier isLogon() {
+        require(accounts[msg.sender] > 0);
+        require(block.number > accounts[msg.sender]);
+        _;
+    }
+    modifier notContract() {
+        uint size;
+        address addr = msg.sender;
+        assembly {
+            size := extcodesize(addr)
+        }
+        require(size == 0);
+        require(tx.origin == msg.sender);
+        _;
+    }
 
     /**
     GET FUNCTION
@@ -103,7 +137,7 @@ contract PoolContract {
      */
 
     function findIndexOfMinStakeInPool() private view returns (uint) {
-        assert(stakersInPool.length > 0);
+        require(stakersInPool.length > 0);
 
         uint min = 0;
         for (uint i = 1; i < stakersInPool.length; i++) {
@@ -162,8 +196,8 @@ contract PoolContract {
         balanceOfStakerOut = balanceOfStakerOut.sub(stake.amount);
 
         uint transferAmount = stake.amount;
-        if (stake.amount > stake.totalStake) {
-            uint totalProfit = stake.amount - stake.totalStake;
+        if (transferAmount > stake.totalStake) {
+            uint totalProfit = transferAmount.sub(stake.totalStake);
             uint forOperator =  totalProfit.mul(PERCENT_OF_REVENUE_FOR_OPERATOR).div(100);
             transferAmount = transferAmount.sub(forOperator);
             balanceOfOperator = balanceOfOperator.add(forOperator);
@@ -174,9 +208,8 @@ contract PoolContract {
             balanceOfOperator = balanceOfOperator.add(WITHDRAW_FEE);
         }
 
-        staker.transfer(transferAmount);
-
         resetStake(staker);
+        staker.transfer(transferAmount);
     }
 
     function resetStake(address staker) private {
@@ -264,9 +297,7 @@ contract PoolContract {
             return;
         }
         takeProfitAtBlock = block.number + NUMBER_BLOCK_OF_TAKE_REVENUE;
-        uint pool;
-        uint profit;
-        (pool, profit) = poolState();
+        (uint pool, uint profit) = poolState();
 
         uint currentPool = address(this).balance
             .sub(subAmount)
@@ -283,22 +314,22 @@ contract PoolContract {
     }
 
     function shareProfitForPrize(uint amount) internal {
-        uint prize = amount.mul(PERCENT_OF_REVENUE_FOR_LEADER_BOARD).div(10000);
+        uint prize = amount.div(PERCENT_OF_REVENUE_FOR_LEADER_BOARD);
         totalPrize = totalPrize.add(prize);
     }
 
     function sendPrizeToWinner(address payable winner, uint amount) internal {
         if (winner == address(0x00)) return;
         if (amount > totalPrize) return;
-        winner.transfer(amount);
         totalPrize = totalPrize.sub(amount);
+        winner.transfer(amount);
     }
 
     /**
     FOR POOL
      */
 
-    function quitPool() external {
+    function quitPool() external isLogon notContract {
         address payable staker = msg.sender;
         Stake storage stake = stakes[staker];
         if (stake.amount == 0) return;
@@ -313,7 +344,7 @@ contract PoolContract {
         }
     }
 
-    function joinPool() external payable notStopped  {
+    function joinPool() external payable notStopped isLogon notContract  {
         address staker = msg.sender;
         uint amount = msg.value;
         Stake storage stake = stakes[staker];
@@ -334,7 +365,7 @@ contract PoolContract {
         emit NewStake(staker, amount);
     }
 
-    function rejoinPool(address add) external notStopped {
+    function rejoinPool(address add) external notStopped isLogon notContract {
         address staker = add == address(0x00) ? msg.sender : add;
         Stake storage stake = stakes[staker];
         require(stake.amount > 0, "don't have amount");
@@ -359,18 +390,30 @@ contract PoolContract {
         emit NewStake(staker, 0);
     }
 
-    function withdrawProfit() external {
+    function withdrawProfit() external isLogon notContract {
         Stake storage stake = stakes[msg.sender];
         require(stake.profit > 0, "Don't have profit");
         uint transferAmount = stake.profit.mul(100 - PERCENT_OF_REVENUE_FOR_OPERATOR).div(100);
         balanceOfOperator = balanceOfOperator.add(stake.profit).sub(transferAmount);
-        msg.sender.transfer(transferAmount);
         stake.profit = 0;
+        msg.sender.transfer(transferAmount);
     }
 
     /**
     OPERATOR
      */
+
+    function setRevenueForOperator(uint value) external onlyOperator {
+        require(value >= 1);
+        require(value <= 15);
+        PERCENT_OF_REVENUE_FOR_OPERATOR = value;
+    }
+
+    function setPrizeForLeaderBoard(uint value) external onlyOperator {
+        require(value >= 500); // 0.2%
+        require(value <= 1000); // 0.1%
+        PERCENT_OF_REVENUE_FOR_LEADER_BOARD = value;
+    }
 
     function takeProfit() external {
         takeProfitInternal(false, 0);
@@ -382,8 +425,12 @@ contract PoolContract {
         add.transfer(amount);
     }
 
-    function () external payable onlyOperator {
+    function () external payable {
         balanceOfOperator = balanceOfOperator.add(msg.value);
+    }
+
+    function emergencyToken(TRC20 token, uint amount) external onlyOperator {
+        token.transfer(operator, amount);
     }
 
     function prizeForLeaderBoard() external payable {
@@ -419,7 +466,7 @@ contract PoolContract {
     /** FOR EMERGENCY */
 
     function prepareStopGame(uint confirm, bool isStopNow) external onlyOperator {
-        require(confirm == 0x14122018, "Enter confirm code");
+        require(confirm == 0x1, "Enter confirm code");
         takeProfitInternal(true, 0);
         for (uint i = 0; i < MAX_STAKER_IN_POOL && stakersInPool.length > 0; i++) {
             removeFromPool(stakersInPool[0]);
@@ -428,7 +475,7 @@ contract PoolContract {
     }
 
     function forceStopGame(uint confirm) external onlyOperator {
-        require(confirm == 0x14122018, "Enter confirm code");
+        require(confirm == 0x1, "Enter confirm code");
         stopped = true;
     }
 

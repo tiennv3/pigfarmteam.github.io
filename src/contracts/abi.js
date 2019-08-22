@@ -56,6 +56,20 @@ module.exports = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "setRefferalReward",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": true,
 		"inputs": [],
 		"name": "MINIMUM_BET_AMOUNT",
@@ -101,20 +115,6 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "n",
-				"type": "uint256"
-			}
-		],
-		"name": "settleBet",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [],
 		"name": "PRIZE_PER_BET_LEVEL",
@@ -126,6 +126,28 @@ module.exports = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "number",
+				"type": "uint256"
+			},
+			{
+				"name": "isOver",
+				"type": "bool"
+			},
+			{
+				"name": "seed",
+				"type": "uint256"
+			}
+		],
+		"name": "placeBet",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -183,10 +205,6 @@ module.exports = [
 			},
 			{
 				"name": "luckyNumber",
-				"type": "uint256"
-			},
-			{
-				"name": "gameType",
 				"type": "uint256"
 			},
 			{
@@ -330,25 +348,6 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "roundToRandIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -370,6 +369,34 @@ module.exports = [
 		"constant": false,
 		"inputs": [],
 		"name": "quitPool",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrizeForLeaderBoard",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "ref",
+				"type": "address"
+			}
+		],
+		"name": "login",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -429,6 +456,20 @@ module.exports = [
 	{
 		"constant": true,
 		"inputs": [],
+		"name": "REWARD_FOR_REFERRAL",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
 		"name": "getStakers",
 		"outputs": [
 			{
@@ -465,13 +506,9 @@ module.exports = [
 			{
 				"name": "",
 				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "address"
 			}
 		],
-		"name": "leaderBoardWinners",
+		"name": "commitments",
 		"outputs": [
 			{
 				"name": "",
@@ -484,8 +521,17 @@ module.exports = [
 	},
 	{
 		"constant": true,
-		"inputs": [],
-		"name": "randIndexForNextRound",
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "leaderBoardWinners",
 		"outputs": [
 			{
 				"name": "",
@@ -546,6 +592,25 @@ module.exports = [
 			{
 				"name": "",
 				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "accounts",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -615,20 +680,6 @@ module.exports = [
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "NUMBER_BLOCK_OF_LOCK_STAKE",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
 		"name": "totalPrize",
 		"outputs": [
 			{
@@ -666,6 +717,38 @@ module.exports = [
 		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "token",
+				"type": "address"
+			},
+			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "emergencyToken",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "setMinBet",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -730,46 +813,6 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getLastRand",
-		"outputs": [
-			{
-				"name": "commitment",
-				"type": "bytes32"
-			},
-			{
-				"name": "secret",
-				"type": "uint256"
-			},
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"name": "_secret",
-				"type": "uint256"
-			}
-		],
-		"name": "reveal",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [],
 		"name": "withdrawProfit",
@@ -802,20 +845,6 @@ module.exports = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newIndex",
-				"type": "uint256"
-			}
-		],
-		"name": "moveRandIndexForNextRound",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [],
 		"name": "WITHDRAW_FEE",
@@ -827,6 +856,20 @@ module.exports = [
 		],
 		"payable": false,
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_referral",
+				"type": "address"
+			}
+		],
+		"name": "setReferral",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -875,23 +918,11 @@ module.exports = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"name": "secret",
-				"type": "uint256"
-			},
-			{
-				"name": "commitment",
-				"type": "bytes32"
-			},
-			{
-				"name": "numberFinish",
+				"name": "value",
 				"type": "uint256"
 			}
 		],
-		"name": "nextTick",
+		"name": "setRevenueForOperator",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -906,20 +937,6 @@ module.exports = [
 			}
 		],
 		"name": "getLastBetIndex",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "numberOfBetWaittingDraw",
 		"outputs": [
 			{
 				"name": "",
@@ -997,43 +1014,6 @@ module.exports = [
 	},
 	{
 		"constant": true,
-		"inputs": [],
-		"name": "indexOfDrawnBet",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "rands",
-		"outputs": [
-			{
-				"name": "commitment",
-				"type": "bytes32"
-			},
-			{
-				"name": "secret",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
 		"inputs": [
 			{
 				"name": "",
@@ -1067,32 +1047,6 @@ module.exports = [
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"name": "isOver",
-				"type": "bool"
-			},
-			{
-				"name": "gameType",
-				"type": "uint256"
-			},
-			{
-				"name": "seed",
-				"type": "uint256"
-			}
-		],
-		"name": "placeBet",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -1133,9 +1087,45 @@ module.exports = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "numberOfCommitment",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [],
 		"name": "finishLeaderBoard",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "i",
+				"type": "uint256"
+			},
+			{
+				"name": "secret",
+				"type": "uint256"
+			},
+			{
+				"name": "newCommitment",
+				"type": "uint256"
+			}
+		],
+		"name": "settleBet",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -1197,7 +1187,7 @@ module.exports = [
 		"inputs": [
 			{
 				"name": "_commitment",
-				"type": "bytes32"
+				"type": "uint256"
 			}
 		],
 		"name": "commit",
@@ -1261,6 +1251,10 @@ module.exports = [
 			},
 			{
 				"name": "_croupier",
+				"type": "address"
+			},
+			{
+				"name": "_referral",
 				"type": "address"
 			}
 		],
@@ -1332,11 +1326,6 @@ module.exports = [
 			},
 			{
 				"indexed": false,
-				"name": "gameType",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
 				"name": "index",
 				"type": "uint256"
 			},
@@ -1370,11 +1359,6 @@ module.exports = [
 			{
 				"indexed": false,
 				"name": "round",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "seedNumber",
 				"type": "uint256"
 			},
 			{

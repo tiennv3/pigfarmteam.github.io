@@ -6,6 +6,7 @@ const CryptoJS = require("crypto-js");
 async function generateCommitment() {
   var secret = web3.utils.randomHex(32);
   var commitment = web3.utils.soliditySha3({type: 'uint', value: secret});
+  commitment = web3.utils.hexToNumberString(commitment);
   var encrypt = CryptoJS.AES.encrypt(secret, process.env.PASSWORD).toString();
   await db.put(commitment, encrypt);
 
@@ -19,14 +20,10 @@ async function getSecret(commitment) {
 }
 
 async function getSecretForBet(bet) {
-  var randIndex = await Contract.get.roundToRandIndex(bet.round);
-  var rand = await Contract.get.rand(randIndex);
-  var secret = rand.secret == '0' ? await getSecret(rand.commitment) : 0;
+  var commitment = await Contract.get.commitment(bet.index);
+  var secret = await getSecret(commitment);
 
-  return {
-    round: secret ? bet.round : 0,
-    secret
-  };
+  return secret
 }
 
 

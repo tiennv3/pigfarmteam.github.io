@@ -3,6 +3,7 @@ import utils from '../utils';
 
 var store = {
   address: '',
+  isLogon: false,
   isShowLoginModal: false,
   isShowAccountModal: false,
   isShowJoinStakePoolModal: false,

@@ -86,7 +86,7 @@ function loginViaTomoWallet(cb) {
 function checkBeforeDoTransaction() {
 
   if (!address) {
-    return 'Login to play plese';
+    return 'Login and connect with maxbet to play please';
   }
 
   if (!web3 || !LuckyContract) {
@@ -113,7 +113,7 @@ function checkBeforeDoTransaction() {
 
 module.exports = {
   get: ContractGetFunctions,
-
+  config: CONTRACT_CONFIG,
   login: function (data, cb) {
     if (data.address) {
       connectStatus = 'address';
@@ -144,7 +144,7 @@ module.exports = {
       connectStatus
     }
   },
-  placeBet: function (amount, number, isOver) {
+  placeBet: async function (amount, number, isOver) {
     var msg = checkBeforeDoTransaction();
     if (msg) {
       return new Promise((resolve, reject) => {
@@ -155,7 +155,7 @@ module.exports = {
       var seed = web3.utils.randomHex(32);
       return new Promise((resolve, reject) => {
         return LuckyContract.methods
-          .placeBet(number, isOver, 1, seed)
+          .placeBet(number, isOver, seed)
           .send({
             from: address,
             to: CONTRACT_CONFIG.ADDRESS,
@@ -519,4 +519,48 @@ module.exports = {
       });
     }
   },
+  settleBet: function(betIndex, secret, newCommitment) {
+    var msg = checkBeforeDoTransaction();
+    if (msg) {
+      return new Promise((resolve, reject) => {
+        reject(new Error(msg));
+      })
+    }
+    else {
+      return new Promise((resolve, reject) => {
+        return LuckyContract.methods
+          .settleBet(betIndex, secret, newCommitment)
+          .send({
+            from: address,
+            to: CONTRACT_CONFIG.ADDRESS,
+            gasLimit: web3.utils.toHex(1000000),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('0.25', 'gwei'))
+          })
+          .on('transactionHash', hash => resolve(hash))
+          .on('error', ex => reject(ex));
+      });
+    }
+  },
+  loginToSmartContract: function(add) {
+    var msg = checkBeforeDoTransaction();
+    if (msg) {
+      return new Promise((resolve, reject) => {
+        reject(new Error(msg));
+      })
+    }
+    else {
+      return new Promise((resolve, reject) => {
+        return LuckyContract.methods
+          .login(add)
+          .send({
+            from: address,
+            to: CONTRACT_CONFIG.ADDRESS,
+            gasLimit: web3.utils.toHex(1000000),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('0.25', 'gwei'))
+          })
+          .on('transactionHash', hash => resolve(hash))
+          .on('error', ex => reject(ex));
+      });
+    }
+  }
 }

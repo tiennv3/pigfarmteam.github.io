@@ -1,9 +1,10 @@
+require('dotenv').config()
+
 const http = require('http');
 const express = require('express');
 const compression = require('compression');
 const bot = require('./bot');
 const db = require('./db');
-require('dotenv').config()
 
 const app = express();
 app.use(compression());
@@ -22,11 +23,20 @@ else {
 
 
 function botError(ex) {
-  console.log('stop and try again', ex);
-  bot.stop();
-  setTimeout(() => {
-    bot.start(botError);
-  }, 2000);
+  console.log('STOP BOT AND RESTART', ex.toString());
+  var msg = ex.toString();
+  if (msg.indexOf('Invalid JSON RPC') >= 0) {
+    bot.stop();
+    setTimeout(() => {
+      bot.start(false, botError);
+    }, 2000);
+  }
+  else if (msg.indexOf('nonce too low') >= 0) {
+    bot.stop();
+    setTimeout(() => {
+      bot.start(false, botError);
+    }, 2000);
+  }
 }
 
 if (process.env.PRIVATE_KEY && process.env.PASSWORD && process.env.MONGODB_URI) {
@@ -38,7 +48,7 @@ if (process.env.PRIVATE_KEY && process.env.PASSWORD && process.env.MONGODB_URI) 
       if (process.env.BOT == 'true') {
         try {
           await db.connect();
-          bot.start(botError);
+          bot.start(false, botError);
           console.log('Bot started');
         }
         catch (ex) {

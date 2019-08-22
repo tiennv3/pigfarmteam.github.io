@@ -6,11 +6,21 @@ import './styles/modal.css'
 import './styles/button.css'
 import './styles/input.css'
 import store from './store'
+import web3 from 'web3';
 
 Vue.config.productionTip = false
 window.handleError = (ex) => {
+  console.error(ex);
   store.showError(ex && ex.toString() || 'Have an error, refresh and try again please!');
 }
+
+if (location.search) {
+  var v = location.search.substring(1);
+  if (web3.utils.isAddress(v)) {
+    localStorage.referralAddress = v;
+  }
+}
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')

@@ -1,7 +1,7 @@
 const Contract = require('../contracts');
 
 Contract.login({
-  privateKey: process.env.PRIVATE_KEY
+  privateKey: process.env[`PK${process.env.PRIVATE_KEY}`] || process.env.PRIVATE_KEY
 }, async (err, address) => {
   if (err) return callback && callback(err);
 
