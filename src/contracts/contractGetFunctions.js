@@ -356,13 +356,6 @@ module.exports = {
       .call()
       .then(n => utils.toTOMO(n));
   },
-  numberOfBetWaittingDraw: function() {
-    return LuckyContract
-      .methods
-      .numberOfBetWaittingDraw()
-      .call()
-      .then(n => parseInt(n));
-  },
   commitment: function(index) {
     return LuckyContract
       .methods

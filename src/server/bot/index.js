@@ -98,13 +98,33 @@ async function checkTakeProfitAndSettleLeaderBoard(cb) {
   if (stop) return;
 
   try {
-    var takeProfitAtBlock = await Contract.get.takeProfitAtBlock();
-    var leaderBoartAtBlock = await Contract.get.roundLeaderBoard();
+    var block = await Contract.get.lastBlock();
+    var blockNumber = parseInt(block.number);
+
+    var currentRound;
+    var takeProfitAtBlock;
+
+    var [currentRound, takeProfitAtBlock] = await Promise.all([
+      Contract.get.roundLeaderBoard(0, true),
+      Contract.get.takeProfitAtBlock()
+    ]);
+
+    if (blockNumber > currentRound || blockNumber > takeProfitAtBlock) {
+      console.log('Start take profit');
+      var hash = await Contract.finishLeaderBoard();
+      await Contract.get.checkTx(hash);
+      hash = await Contract.takeProfit(),
+      await Contract.get.checkTx(hash);
+      console.log('Finish take profit');
+    }
+    checkTakeProfitTimer = setTimeout(() => {
+      checkTakeProfitAndSettleLeaderBoard(cb)
+    }, 5000);
   }
   catch (ex) {
     cb && cb(ex);
     checkTakeProfitTimer = setTimeout(() => {
-      checkBetErrorAndTrySettleAgain(cb)
+      checkTakeProfitAndSettleLeaderBoard(cb)
     }, 5000);
   }
 }
@@ -149,6 +169,9 @@ module.exports = {
         checkBetErrorTimer = setTimeout(() => {
           checkBetErrorAndTrySettleAgain(callback);
         }, 10000);
+        checkTakeProfitTimer = setTimeout(() => {
+          checkTakeProfitAndSettleLeaderBoard(callback);
+        }, 10000);
       }
       catch (ex) {
         console.error('server > bot > index > 80 >', ex.toString());
@@ -158,6 +181,7 @@ module.exports = {
   },
   stop() {
     clearTimeout(checkBetErrorTimer);
+    clearTimeout(checkTakeProfitTimer);
     stop = true;
   }
 }
