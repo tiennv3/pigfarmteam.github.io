@@ -297,10 +297,8 @@ module.exports = {
           max: utils.toTOMO(v.max)
         }
         result.max = result.max > 500 ? 500 : result.max;
-        result.min = result.min < result.max ? result.min : 0.1;
-
+        result.min = result.min;
         result.max = result.max > 10 ? Math.floor(result.max) : result.max;
-
         return result;
       })
   },

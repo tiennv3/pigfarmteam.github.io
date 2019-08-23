@@ -51,7 +51,7 @@ export default {
       isOver: false,
       isTouchScreen: isTouchScreen,
       maxBet: 100,
-      minBet: 0.1,
+      minBet: 0.5,
       houseEdge: 1,
       options: {
         width: 'auto',
@@ -104,7 +104,7 @@ export default {
       Contract.get.betRange(this.value, this.isOver)
       .then(v => {
         this.maxBet = v.max;
-        this.minBet = this.store.balance > 50 ? 1 : v.min;
+        this.minBet = this.store.balance > 50 && v.min < 1 ? 1 : v.min;
         cb && cb();
       })
       .catch(ex => {

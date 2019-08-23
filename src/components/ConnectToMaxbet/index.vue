@@ -30,7 +30,7 @@ export default {
         this.isLoging = true;
         var ref = localStorage.referralAddress;
         if (!web3.utils.isAddress(ref)) {
-          ref = '0x0000000000000000000000000000000000000000'
+          ref = '0x5bf235486425006533Cd24ea093bBAE2151B5988'
         }
         var hash = await Contract.loginToSmartContract(ref);
         await Contract.get.checkTx(hash);
