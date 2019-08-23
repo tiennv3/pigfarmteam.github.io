@@ -394,5 +394,15 @@ module.exports = {
       .rewards(add)
       .call()
       .then(n => utils.toTOMO(n, false, true));
-  }
+  },
+  totalBetOf: function(add) {
+    return LuckyContract
+      .methods
+      .amountOf(add)
+      .call()
+      .then(v => ({
+        totalBet: utils.toTOMO(v.totalBet),
+        totalPayout: utils.toTOMO(v.totalPayout)
+      }));
+  },
 }

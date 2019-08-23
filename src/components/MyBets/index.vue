@@ -1,5 +1,9 @@
 <template>
   <div class="fs15">
+    <div style="display: flex; justify-content: space-around; margin-bottom: 25px; background: rgb(0, 150, 136); padding: 5px 0;">
+      <span>Total Bet: <span style="color: #f0c22a;">{{totalAmount.totalBet}} <span style="font-size: 10px;">TOMO</span></span></span>
+      <span>Total Payout: <span style="color: #f0c22a;">{{totalAmount.totalPayout}} <span style="font-size: 10px;">TOMO</span></span></span>
+    </div>
     <table width="100%">
       <thead>
         <tr class="fs12">
@@ -46,13 +50,18 @@ export default {
       houseEdge: 1,
       limit: 13,
       index: 0,
-      numberOfBet: 0
+      numberOfBet: 0,
+      totalAmount: {
+        totalBet: 0,
+        totalPayout: 0,
+      }
     }
   },
   async created() {
     if (this.store.address) {
       var n = await Contract.get.totalNumberOfBets(this.store.address);
       this.numberOfBet = n || 0;
+      this.totalAmount = await Contract.get.totalBetOf(this.store.address);
 
       if (n) {
         this.index = n - 1;
