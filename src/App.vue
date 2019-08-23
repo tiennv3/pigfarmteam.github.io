@@ -91,7 +91,7 @@ export default {
           store.address = address;
         });
       }
-      else {
+      else if (!window.web3.currentProvider.isMetaMask) {
         Contract.login({
           metamask: true
         }, (err, address) => {

@@ -35,33 +35,35 @@ function loginViaMetamask(cb) {
 
   web3 = new Web3(window.web3.currentProvider);
   LuckyContract = new web3.eth.Contract(CONTRACT_CONFIG.ABI, CONTRACT_CONFIG.ADDRESS);
+  window.ethereum.enable()
+  .then(() => {
+    window.web3.eth.getAccounts(function (err, accounts) {
+      if (err) {
+        return cb && cb('Have an error with Metamask')
+      }
+      else if (accounts.length === 0) {
+        return cb && cb('Unlock Metamask, please')
+      }
+      connectStatus = 'metamask';
+      address = accounts[0];
+      cb && cb(null, accounts[0]);
 
-  window.web3.eth.getAccounts(function (err, accounts) {
-    if (err) {
-      return cb && cb('Have an error with Metamask')
-    }
-    else if (accounts.length === 0) {
-      return cb && cb('Unlock Metamask, please')
-    }
-    connectStatus = 'metamask';
-    address = accounts[0];
-    cb && cb(null, accounts[0]);
+      metamaskAccountInterval = setInterval(() => {
+        window.web3.eth.getAccounts((err, accounts) => {
+          if (address && accounts.length > 0 && accounts[0] !== address) {
+            address = accounts[0]
+            window.location.reload();
+            cb && cb(null, address);
+          }
+        });
+      }, 1000);
 
-    metamaskAccountInterval = setInterval(() => {
-      window.web3.eth.getAccounts((err, accounts) => {
-        if (address && accounts.length > 0 && accounts[0] !== address) {
-          address = accounts[0]
-          window.location.reload();
-          cb && cb(null, address);
+      window.web3.version.getNetwork((err, netId) => {
+        currentNetwork = netId;
+        if (netId != CONTRACT_CONFIG.NETWORK_ID) {
+          alert('Uknown network, change network to TomoChain, please');
         }
       });
-    }, 1000);
-
-    window.web3.version.getNetwork((err, netId) => {
-      currentNetwork = netId;
-      if (netId != CONTRACT_CONFIG.NETWORK_ID) {
-        alert('Uknown network, change network to TomoChain, please');
-      }
     });
   });
 }
