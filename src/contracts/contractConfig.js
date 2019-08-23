@@ -16,7 +16,7 @@ module.exports = {
 
   NETWORK_ID: process.env.NODE_ENV === 'production' ? '88' : '89',
   REFERRAL_ADDRESS: process.env.NODE_ENV === 'production' ?
-    '0x8a076e40b635d204cf10f5b448b5caae93599e9d' :
+    '0xce8419d22fa23196aeb354c028a231e51729f823' :
     '0xc0f96f7d7b8f62a9b08e7a8f5bb5113eba6aa991',
   ADDRESS: process.env.NODE_ENV === 'production' ?
     '0xbf1dcb735e512b731abd3404c15df6431bd03d42' :

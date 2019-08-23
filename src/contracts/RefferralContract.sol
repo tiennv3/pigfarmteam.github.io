@@ -4,6 +4,7 @@ contract ReferralContract {
   mapping(address => address) public referral;
   mapping(address => bool) public games;
   mapping(address => uint) public rewards;
+  mapping(address => address[]) public referralOf;
   address public owner;
   address public newOwner;
   uint public lastWithdraw;
@@ -47,11 +48,16 @@ contract ReferralContract {
       && referral[to] == address(0x0)
     ) {
       referral[to] = from;
+      referralOf[from].push(to);
     }
   }
 
   function refOf(address to) public view returns (address) {
     return referral[to];
+  }
+
+  function numberReferralOf(address add) public view returns (uint) {
+    return referralOf[add].length;
   }
 
   function reward(address addr) public payable inGame {
