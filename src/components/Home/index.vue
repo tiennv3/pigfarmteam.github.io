@@ -43,12 +43,12 @@
             <br/>
 
             <div>
-              <b style="color: red;">A</b> invite <b style="color: #03a9f4;">B</b> and <b style="color: #03a9f4;">B</b> bets total <b style="color: yellow;">100.000 <span style="font-size: 8px;">TOMO</span></b>
+              <b style="color: red;">A</b> invite <b style="color: #03a9f4;">B</b> and <b style="color: #03a9f4;">B</b> bets total <b style="color: yellow;">100000 <span style="font-size: 8px;">TOMO</span></b>
               <br/>
               👉<b style="color: red;">A</b> receive <b style="color: yellow;">100 <span style="font-size: 8px;">TOMO</span></b>
               <br/>
               <br/>
-              <b style="color: #03a9f4;">B</b> invite <b style="color: #4caf50;">C</b>, <b style="color: #4caf50;">C</b> bets total <b style="color: yellow;">500.000 <span style="font-size: 8px;">TOMO</span></b>
+              <b style="color: #03a9f4;">B</b> invite <b style="color: #4caf50;">C</b>, <b style="color: #4caf50;">C</b> bets total <b style="color: yellow;">500000 <span style="font-size: 8px;">TOMO</span></b>
               <br/>
               👉<b style="color: #03a9f4;">B</b> receive <b style="color: yellow;">475 <span style="font-size: 8px;">TOMO</span></b> and <b style="color: red;">A</b> receive <b style="color: yellow;">25 <span style="font-size: 8px;">TOMO</span></b>
             </div>
