@@ -45,6 +45,7 @@ if (process.env.PRIVATE_KEY && process.env.PASSWORD && process.env.MONGODB_URI) 
       console.log(err);
     }
     else {
+      console.log(process.env.BOT, process.env.BOT == 'true')
       if (process.env.BOT == 'true') {
         try {
           await db.connect();
