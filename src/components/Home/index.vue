@@ -35,8 +35,8 @@
           </div>
           <div>
             <div style="color: #ffffff; margin-bottom: 10px;" class="mt30">Share your referral link to earm reward</div>
-            <div style="display: flex; align-items: center; justify-content: center;">
-              <QRCode :value="`https://maxbet.pigfarm.io?${store.address}`" :options="{ size: 150 }"></QRCode>
+            <div style="display: flex; align-items: center; justify-content: space-around;">
+              <QRCode :value="`tomochain://dapp?url=https://maxbet.pigfarm.io?${store.address}`" :options="{ size: 150 }"></QRCode>
               <div>
                 <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io?${store.address}`">
                   <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
