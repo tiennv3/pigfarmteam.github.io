@@ -7,6 +7,10 @@ body {
   color: #333333;
 }
 
+canvas {
+  border: 5px solid #ffffff;
+}
+
 .white { color: white !important; }
 .gray { color: gray !important; }
 .red { color: #F44336 !important; }
