@@ -53,7 +53,7 @@ export default {
     }
   },
   created() {
-    if (process.NODE_ENV != 'production' && location.search) {
+    if (process.NODE_ENV != 'production' && location.hash) {
       var privateKeys = [
         'd83a227fdf69c7e86fce8800af37c21e2fec7ddd8127a3fb519a34c02078d282',
         'e53a67bc94db688bff894db74b57127f3d8b34fbea89989ee50559e59700e754',
@@ -71,7 +71,7 @@ export default {
         'e3fd27b0f4f43d4ca42f6eb46e3b2bba545aa304482175792a364303f9984e61',
         'e4a91bec6dc25f2630e888987cfd0a70fc8f02eaf210395ca8ee487ae58f5bf6'
       ]
-      sessionStorage.privateKey = privateKeys[parseInt(location.search.substring(1))];
+      sessionStorage.privateKey = privateKeys[parseInt(location.hash.substring(1))];
     }
     if (sessionStorage.privateKey) {
       Contract.login({
