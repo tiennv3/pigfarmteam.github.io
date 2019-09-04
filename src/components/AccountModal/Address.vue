@@ -4,7 +4,7 @@
       <QRCode :value="address" :options="{ size: 150 }"></QRCode>
     </div>
     <div class="address-text">
-      <div >
+      <div>
         {{address}}
         <button class="address-coppy-btn" :data-clipboard-text="address">
           <img src="./coppy.svg" width="15px" />{{isCopied ? '&nbsp;copied' : ''}}
@@ -56,6 +56,7 @@ export default {
 .address-text {
   word-break: break-all;
   text-align: center;
+  margin-top: 15px;
 }
 
 .address-coppy-btn {
