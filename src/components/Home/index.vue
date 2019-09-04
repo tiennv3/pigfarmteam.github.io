@@ -39,7 +39,7 @@
               <QRCode :value="`tomochain://dapp?url=https://maxbet.pigfarm.io?${store.address}`" :options="{ size: 150 }"></QRCode>
               <div>
                 <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io?${store.address}`">
-                  <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
+                  <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Link '}}
                 </button>
                 <div style="color: #ffffff">
                   or Scan QR Code via TomoWallet
