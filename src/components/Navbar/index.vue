@@ -11,7 +11,7 @@
         <img width="21px" height="21px" src="./chat.svg" />
       </a>
       <div v-if="address" class="avatar" @click="showAccount">
-        <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Pale'/>
+        <img src='./avatar.svg'/>
       </div>
       <div v-if="address" class="account">
         <div class="fs15 op7">Your balance</div>
@@ -24,7 +24,6 @@
       <div v-if="!address" class="account">
         <button class="account-login" @click="login">Login</button>
       </div>
-      <!-- <audio ref="audio" style="width: 0; height: 0; opacity: 0;" src="/static/sound.mp3"  controls></audio> -->
     </div>
   </div>
 </template>

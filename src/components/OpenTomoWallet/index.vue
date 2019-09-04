@@ -16,14 +16,15 @@ export default {
   },
   computed: {
     show() {
-      return !this.store.address && (!window.web3 || !window.web3.currentProvider)
+      return !this.store.address// && (!window.web3 || !window.web3.currentProvider)
     }
   },
   methods: {
     open() {
-      var ref = localStorage.referralAddress;
+      var ref = localStorage.referralAddress || location.search || '';
+      ref = ref.replace('?', '');
       if (web3.utils.isAddress(ref)) {
-        window.location = `tomochain://dapp?url=https://maxbet.pigfarm.io#${ref}`
+        window.location = `tomochain://dapp?url=https://maxbet.pigfarm.io?${ref}`
       }
       else {
         window.location = `tomochain://dapp?url=https://maxbet.pigfarm.io`

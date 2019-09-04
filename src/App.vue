@@ -77,8 +77,7 @@ export default {
       Contract.login({
         address: sessionStorage.address,
         privateKey: sessionStorage.privateKey,
-        hdpath: sessionStorage.hdpath,
-        metamask: localStorage.metamask
+        hdpath: sessionStorage.hdpath
       }, (err, address) => {
         console.log(address);
         store.address = address;

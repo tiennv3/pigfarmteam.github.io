@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.clear();
       sessionStorage.clear();
       Contract.logout();
       this.store.isShowAccountModal = false;

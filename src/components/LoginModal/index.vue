@@ -96,7 +96,6 @@ export default {
         if (err) return alert(err);
         this.store.address = address;
         this.store.isShowLoginModal = false;
-        localStorage.metamask = true;
       })
     }
   }

@@ -8,9 +8,6 @@
       Chat room
       <button class="modal-close-btn" style="opacity: 0.25" @click="() => store.isShowChatBox = false"/>
     </div>
-    <iframe v-if="store.isShowChatBox" :src='`https://anonymous-chat-group.herokuapp.com/maxbet#${store.address}|${shortAddress}`'
-      width='100%' height='100%'
-      style='border:none;'></iframe>
   </div>
 </template>
 

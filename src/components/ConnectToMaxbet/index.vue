@@ -28,7 +28,8 @@ export default {
       try {
         if (this.isLoging) return;
         this.isLoging = true;
-        var ref = localStorage.referralAddress;
+        var ref = localStorage.referralAddress || location.search || '';
+        ref = ref.replace('?', '');
         if (!web3.utils.isAddress(ref)) {
           ref = '0x5bf235486425006533Cd24ea093bBAE2151B5988'
         }
