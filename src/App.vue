@@ -11,6 +11,7 @@
     <SettingModal v-if="store.isShowSettingModal" />
     <Home />
     <ChatBox/>
+    <OpenTomoWallet />
   </div>
 </template>
 
@@ -26,7 +27,7 @@ import HelpModal from './components/HelpModal';
 import ErrorModal from './components/ErrorModal';
 import SettingModal from './components/SettingModal';
 import ChatBox from './components/ChatBox';
-
+import OpenTomoWallet from './components/OpenTomoWallet';
 import store from './store';
 import Contract from './contracts';
 
@@ -43,7 +44,8 @@ export default {
     ErrorModal,
     ChatBox,
     DonateForPrizePoolModal,
-    SettingModal
+    SettingModal,
+    OpenTomoWallet
   },
   data() {
     return {

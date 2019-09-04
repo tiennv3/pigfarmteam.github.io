@@ -24,20 +24,30 @@
       </div>
       <div class="home-gameinfo">
         <GameInfo />
-
         <div v-if="store.address" style="text-align: center; background: rgba(255, 255, 255, 0.17); padding: 10px 20px; margin-top: 10px;">
           <div style="color: #ffffff;">Your Referral Reward
-            <div style="color: rgb(240, 194, 42);">{{ referralReward }} TOMO</div>
-          </div>
-          <div class="mt10" >
-            <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io#${store.address}`">
-              <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
-            </button>
+            <div style="color: rgb(240, 194, 42);">
+              {{ referralReward }} TOMO
+            </div>
             <button v-if="referralReward > 0" class="referral-coppy-btn" @click="withdrawReferralReward">
               <img src="./withdraw.svg" width="15px" />&nbsp;&nbsp;{{isWithdrawing ? 'Withdrawing' : 'Withdraw'}}
             </button>
           </div>
-          <div style="font-size: 13px; font-family: sans-serif; color: #ffffff;">
+          <div>
+            <div style="color: #ffffff; margin-bottom: 10px;" class="mt30">Share your referral link to earm reward</div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+              <QRCode :value="`https://maxbet.pigfarm.io#${store.address}`" :options="{ size: 150 }"></QRCode>
+              <div>
+                <button class="referral-coppy-btn" :data-clipboard-text="`https://maxbet.pigfarm.io#${store.address}`">
+                  <img src="./coppy.svg" width="15px" />&nbsp;&nbsp;{{isCopied ? 'copied' : 'Copy Referral Link '}}
+                </button>
+                <div style="color: #ffffff">
+                  or Scan QR Code via TomoWallet
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size: 13px; font-family: sans-serif; color: #ffffff; margin-top: 20px;">
             Share our game to receive 0.1% of the bet amount for each bet, and 5% of referrals' reward
             <br/>
             <br/>
@@ -73,6 +83,7 @@ import Footer from '../Footer';
 import utils from '../../utils';
 import ConnectToMaxbet from '../ConnectToMaxbet';
 import ClipboardJS from 'clipboard';
+import QRCode from '@xkeshi/vue-qrcode';
 
 export default {
   components: {
@@ -83,7 +94,8 @@ export default {
     Bet,
     GameInfo,
     Footer,
-    ConnectToMaxbet
+    ConnectToMaxbet,
+    QRCode
   },
   data() {
     return {
@@ -433,7 +445,6 @@ export default {
   font-size: 15px;
   font-family: 'Baloo', serif;
   color: #268bd8;
-  margin-left: 10px;
   display: inline-flex;
   align-items: center;
   border-radius: 5px;
