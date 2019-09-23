@@ -31,7 +31,7 @@ export default {
         var ref = localStorage.referralAddress || location.search || '';
         ref = ref.replace('?', '');
         if (!web3.utils.isAddress(ref)) {
-          ref = '0x5bf235486425006533Cd24ea093bBAE2151B5988'
+          ref = window.MaxBetSetting.defaultReferralAddress;
         }
         var hash = await Contract.loginToSmartContract(ref);
         await Contract.get.checkTx(hash);

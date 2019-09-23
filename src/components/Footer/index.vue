@@ -1,12 +1,12 @@
 <template>
   <div class="footer">
-    <a href="https://t.me/pigfarm" class="icon">
+    <a :href="setting.telegram" class="icon">
       <img src="./telegram-logo.svg" alt="github" height="35px">
     </a>
-    <a href="https://twitter.com/PigFarmTeam" class="icon">
+    <a :href="setting.twitter" class="icon">
       <img src="./twitter-logo.svg" alt="github" height="35px">
     </a>
-    <a href="https://github.com/pigfarmteam/maxbet" class="icon">
+    <a :href="setting.github" class="icon">
       <img src="./github-logo.svg" alt="github" height="35px">
     </a>
     <a href="https://scan.tomochain.com/address/0xbf1dcb735e512b731abd3404c15df6431bd03d42" class="icon">
@@ -29,7 +29,8 @@ import _store from '../../store';
 export default {
   data() {
     return {
-      isMobile: mobileAndTabletcheck()
+      isMobile: mobileAndTabletcheck(),
+      setting: window.MaxBetSetting
     }
   },
   methods: {
@@ -50,7 +51,7 @@ export default {
 .footer {
   text-align: center;
   color: rgba(255, 255, 255, 0.5);
-  padding: 50px 0 20px 0;
+  padding: 50px 0 90px 0;
   font-family: sans-serif;
   font-size: 14px;
 }

@@ -24,7 +24,7 @@
       </div>
       <div class="home-gameinfo">
         <GameInfo />
-        <div v-if="store.address" style="text-align: center; background: rgba(255, 255, 255, 0.17); padding: 10px 20px; margin-top: 10px;">
+        <div v-if="store.address && showReferralBox" style="text-align: center; background: rgba(255, 255, 255, 0.17); padding: 10px 20px; margin-top: 10px;">
           <div style="color: #ffffff;">Your Referral Reward
             <div style="color: rgb(240, 194, 42);">
               {{ referralReward }} TOMO
@@ -108,6 +108,7 @@ export default {
       isCopied: false,
       referralReward: 0,
       isWithdrawing: false,
+      showReferralBox: window.MaxBetSetting.showReferralBox,
       bet: {
         index: 0,
         isOver: false,

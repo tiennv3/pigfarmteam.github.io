@@ -4,10 +4,10 @@
       <a class="leader-btn" @click="showHelp">
         <img width="21px" height="21px" src="./help.svg" />
       </a>
-      <a v-if="isTomoWallet" class="chat-btn" href="https://t.me/pigfarm">
+      <a v-if="isTomoWallet" class="chat-btn" :href="setting.telegram">
         <img width="21px" height="21px" src="./chat.svg" />
       </a>
-      <a v-else class="chat-btn" target="__blank" href="https://t.me/pigfarm">
+      <a v-else class="chat-btn" target="__blank" :href="setting.telegram">
         <img width="21px" height="21px" src="./chat.svg" />
       </a>
       <div v-if="address" class="avatar" @click="showAccount">
@@ -43,7 +43,8 @@ export default {
       store: _store,
       isTomoWallet: Contract.accountInfo().connectStatus == 'tomowallet',
       addBalanceValue: 0,
-      subBalanceValue: 0
+      subBalanceValue: 0,
+      setting: window.MaxBetSetting
     }
   },
   created() {
