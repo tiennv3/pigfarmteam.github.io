@@ -12,7 +12,7 @@
     <a href="https://scan.tomochain.com/address/0xbf1dcb735e512b731abd3404c15df6431bd03d42" class="icon">
       <img src="./tomo-scan-logo.svg" alt="github" height="35px">
     </a>
-    <div class="mt10" @click="setting">
+    <div class="mt10" @click="ownerSetting">
       MaxBet © 2019 PigFarm Team.
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
     mail() {
       alert('pigfarmteam@yandex.com');
     },
-    setting() {
+    ownerSetting() {
       if (_store.address.toLowerCase() === '0xbe36e1dc37add0878a8f3fd6f2a0567824e1f4fe') {
         _store.isShowSettingModal = true;
       }
