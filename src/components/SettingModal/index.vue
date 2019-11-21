@@ -207,8 +207,8 @@ export default {
       if (this.isSubmitting) return;
       this.isSubmitting = true;
       try {
-        if (this.minBet < 1 || this.minBet > 15) {
-          this.msg = `Value from 1 to 15`;
+        if (this.minBet < 0.1 || this.minBet > 10) {
+          this.msg = `Value from 0.1 to 10`;
           this.isError = true;
           return;
         }
