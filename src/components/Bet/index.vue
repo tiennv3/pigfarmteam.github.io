@@ -104,7 +104,7 @@ export default {
       Contract.get.betRange(this.value, this.isOver)
       .then(v => {
         this.maxBet = v.max;
-        this.minBet = this.store.balance > 50 && v.min < 1 ? 1 : v.min;
+        this.minBet = v.min;
         cb && cb();
       })
       .catch(ex => {
