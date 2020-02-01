@@ -159,7 +159,7 @@ module.exports = {
         var betIndex = 1;
         try {
           betIndex = await db.get(`LAST_BET_SETTLE_${Contract.config.ADDRESS}`);
-          betIndex = parseInt(betIndex);
+          betIndex = parseInt(process.env.SETTLE_BET_INDEX || 0) || parseInt(betIndex);
         }
         catch (ex) {
         }
